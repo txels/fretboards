@@ -11,6 +11,7 @@ var Scales = {
     aeolian: "c d eb f g ab bb",
     phrygian: "c db eb f g ab bb",
     locrian: "c db eb f gb ab bb",
+    "minor-pentatonic": "c eb f g bb",
     _: function(scale) { return Scales[scale].split(" "); },
 };
 
@@ -179,6 +180,7 @@ function notes(notes) {
 
 
 function scale(scaleName) {
+    reset();
     notes(asNotes(scaleName));
 }
 
