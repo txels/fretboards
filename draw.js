@@ -66,7 +66,7 @@ var TUNING_E_std = ["e2", "a2", "d3", "g3", "b3", "e4"];
 var TUNING_G_open = ["d2", "g2", "d3", "g3", "b4", "d4"];
 
 var Fretboard = {
-    frets: 17,
+    frets: 12,
     strings: 6,
     tuning: TUNING_E_4ths,
     fretWidth: 50,
@@ -179,7 +179,7 @@ drawFretboard();
 
 // Notes on fretboard
 
-function drawNoteOnString(note, string, color) {
+function addNoteOnString(note, string, color) {
     var absPitch = absNote(note);
     color = color || "black";
     var absString = (Fretboard.strings - string);
@@ -196,20 +196,20 @@ function drawNoteOnString(note, string, color) {
 }
 
 
-function drawNote(note, color) {
+function addNote(note, color) {
     for(string=1; string<=Fretboard.strings; string++) {
-        drawNoteOnString(note, string, color);
+        addNoteOnString(note, string, color);
     }
 }
 
 
-function notes(notes) {
+function addNotes(notes, color) {
     var allNotes = notes.split(" ");
     for (i=0; i<allNotes.length; i++) {
-        var color = colors[i];
+        var showColor = color || colors[i];
         var note = allNotes[i];
         for (octave=2; octave<7; octave++) {
-            drawNote(note + octave, color);
+            addNote(note + octave, showColor);
         }
     }
 }
@@ -217,18 +217,19 @@ function notes(notes) {
 
 function scale(scaleName) {
     reset();
-    notes(asNotes(scaleName));
+    addNotes(asNotes(scaleName));
 }
 
 
 function placeNotes(sequence) {
     // Sequence of string:note
     // e.g. "6:g2 5:b2 4:d3 3:g3 2:d4 1:g4"
+    reset();
     var pairs = sequence.split(" ");
     pairs.forEach(function(pair, i) {
         let [string, note] = pair.split(":");
         string = parseInt(string);
-        drawNoteOnString(note, string, i==0? "red":"black");
+        addNoteOnString(note, string, i==0? "red":"black");
     });
 }
 
@@ -249,4 +250,3 @@ function reset() {
         .remove();
     drawFretboard();
 }
-
