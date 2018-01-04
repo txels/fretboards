@@ -82,7 +82,7 @@ var Fretboard = {
     fretboardHeight: function () { return (this.strings - 1) * this.fretHeight + 2; },
     fretboardWidth: function() { return this.frets * this.fretWidth + 2; },
     XMARGIN: function() { return this.fretWidth; },
-    YMARGIN: function() { return this.fretHeight / 2; },
+    YMARGIN: function() { return this.fretHeight; },
 };
 
 
@@ -92,7 +92,7 @@ var svgContainer = d3
     .attr("width", Fretboard.fretboardWidth() + Fretboard.XMARGIN())
     .attr("height", Fretboard.fretboardHeight() + Fretboard.YMARGIN() * 2);
 
-d3.select("body").append("p").text("Tuning:");
+var verbatim = function(d) { return d; };
 
 
 function drawFrets() {
@@ -122,6 +122,18 @@ function drawStrings() {
             .attr("stroke-width", 1)
             ;
     }
+    var placeTuning = function(d, i) { return (Fretboard.strings - i) * Fretboard.fretHeight - 5 + "px"; };
+    d3.select("body")
+        .selectAll(".tuning")
+        .data(Fretboard.tuning)
+        .style("top", placeTuning)
+        .text(verbatim)
+        .enter()
+        .append("p")
+        .attr("class", "tuning")
+        .style("top", placeTuning)
+        .text(verbatim)
+        ;
 }
 
 
@@ -156,8 +168,6 @@ function drawDots() {
 
 
 function drawFretboard() {
-    d3.selectAll("p")
-      .text("Tuning: " + Fretboard.tuning.join(" ").toUpperCase());
     drawFrets();
     drawStrings();
     drawDots();
