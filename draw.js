@@ -52,7 +52,7 @@ function absNote(note) {
 function asNotes(scale) {
     let [root, type] = scale.split(" ");
     var scaleInC = Scales._(type);
-    var shift = allNotes.indexOf(root); 
+    var shift = allNotes.indexOf(root);
     var scaleTransposed = scaleInC.map(function(note) {
         return allNotes[(asOffset(note) + shift) % 12];
     });
@@ -177,7 +177,10 @@ function drawFretboard() {
 drawFretboard();
 
 
-function drawNoteOnString(absPitch, string, color) {
+// Notes on fretboard
+
+function drawNoteOnString(note, string, color) {
+    var absPitch = absNote(note);
     color = color || "black";
     var absString = (Fretboard.strings - string);
     var basePitch = absNote(Fretboard.tuning[absString]);
@@ -194,9 +197,8 @@ function drawNoteOnString(absPitch, string, color) {
 
 
 function drawNote(note, color) {
-    var absPitch = absNote(note);
     for(string=1; string<=Fretboard.strings; string++) {
-        drawNoteOnString(absPitch, string, color);
+        drawNoteOnString(note, string, color);
     }
 }
 
@@ -216,6 +218,18 @@ function notes(notes) {
 function scale(scaleName) {
     reset();
     notes(asNotes(scaleName));
+}
+
+
+function placeNotes(sequence) {
+    // Sequence of string:note
+    // e.g. "6:g2 5:b2 4:d3 3:g3 2:d4 1:g4"
+    var pairs = sequence.split(" ");
+    pairs.forEach(function(pair, i) {
+        let [string, note] = pair.split(":");
+        string = parseInt(string);
+        drawNoteOnString(note, string, i==0? "red":"black");
+    });
 }
 
 
