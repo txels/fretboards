@@ -1,0 +1,33 @@
+{
+  "name": "d3-fretboard",
+  "version": "0.1.0",
+  "description": "Display fretboards and notes on your browser",
+  "keywords": [
+    "d3",
+    "guitar",
+    "fretboard"
+  ],
+  "homepage": "https://txels.github.io/fretboard/index.html",
+  "author": {
+    "name": "Carles Barrobés",
+    "url": "http://txels.barrobes.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/txels/fretboard.git"
+  },
+  "dependencies": {
+    "d3": "3.0.x"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.22",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-jasmine": "^1.0.2"
+  },
+  "scripts": {
+    "test": "karma start"
+  },
+  "readmeFilename": "README.md"
+}
