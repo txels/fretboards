@@ -86,25 +86,34 @@ var Fretboard = {
 };
 
 
-var svgContainer = d3
-    .select("body")
-    .append("svg")
-    .attr("width", Fretboard.fretboardWidth() + Fretboard.XMARGIN())
-    .attr("height", Fretboard.fretboardHeight() + Fretboard.YMARGIN() * 2);
+function makeContainer() {
+    return d3
+        .select("body")
+        .append("svg")
+        .attr("width", Fretboard.fretboardWidth() + Fretboard.XMARGIN() * 2)
+        .attr("height", Fretboard.fretboardHeight() + Fretboard.YMARGIN() * 2);
+}
 
 var verbatim = function(d) { return d; };
 
 
 function drawFrets() {
     for(i=0; i<=Fretboard.frets; i++) {
+        let x = i * Fretboard.fretWidth + 1 + Fretboard.XMARGIN();
         svgContainer
             .append("line")
-            .attr("x1", i * Fretboard.fretWidth + 1 + Fretboard.XMARGIN())
+            .attr("x1", x)
             .attr("y1", Fretboard.YMARGIN())
-            .attr("x2", i * Fretboard.fretWidth + 1 + Fretboard.XMARGIN())
+            .attr("x2", x)
             .attr("y2", Fretboard.YMARGIN() + Fretboard.fretboardHeight())
             .attr("stroke", "lightgray")
-            .attr("stroke-width", i==0? 8:2)
+            .attr("stroke-width", i==0? 8:2);
+        d3.select("body")
+            .append("p")
+            .attr("class", "fretnum")
+            .style("top", (Fretboard.fretboardHeight() + Fretboard.YMARGIN() + 5) + "px")
+            .style("left", x - 4 + "px")
+            .text(i)
             ;
     }
 }
@@ -174,6 +183,7 @@ function drawFretboard() {
 }
 
 
+svgContainer = makeContainer();
 drawFretboard();
 
 
@@ -189,7 +199,8 @@ function addNoteOnString(note, string, color) {
             .append("circle")
             .attr("class", "note")
             .attr("stroke-width", 2)
-            .attr("cx", (absPitch - basePitch) * Fretboard.fretWidth + Fretboard.fretWidth/1.5)
+            // 0.75 is the offset into the fret (higher is closest to fret)
+            .attr("cx", (absPitch - basePitch + 0.75) * Fretboard.fretWidth)
             .attr("cy", (string - 1) * Fretboard.fretHeight + 1 + Fretboard.YMARGIN())
             .attr("r", 6).style("stroke", color).style("fill", "white")
             .on("click", function(d) {
@@ -249,6 +260,7 @@ function resetNotes() {
 
 
 function reset() {
+    d3.selectAll(".fretnum,.tuning").remove();
     svgContainer
         .selectAll("line")
         .remove();
