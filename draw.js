@@ -1,7 +1,7 @@
 // Music
 var allNotes = ["c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"];
-var allNotesEnh = ["b#", "db", "d", "eb", "e", "e#", "gb", "g", "ab", "a", "bb", "b"];
-var colors = ["red", "black", "blue", "green", "purple", "gray", "orange", "lightgray"];
+var allNotesEnh = ["c", "db", "d", "eb", "e", "f", "gb", "g", "ab", "a", "bb", "b"];
+var colors = ["red", "green", "blue", "black", "purple", "gray", "orange", "lightgray"];
 
 var Scales = {
     // scales
@@ -52,9 +52,9 @@ function absNote(note) {
 function asNotes(scale) {
     let [root, type] = scale.split(" ");
     var scaleInC = Scales._(type);
-    var shift = allNotes.indexOf(root);
+    var offset = asOffset(root);
     var scaleTransposed = scaleInC.map(function(note) {
-        return allNotes[(asOffset(note) + shift) % 12];
+        return allNotes[(asOffset(note) + offset) % 12];
     });
     return scaleTransposed.join(" ");
 }
@@ -191,7 +191,14 @@ function addNoteOnString(note, string, color) {
             .attr("stroke-width", 2)
             .attr("cx", (absPitch - basePitch) * Fretboard.fretWidth + Fretboard.fretWidth/1.5)
             .attr("cy", (string - 1) * Fretboard.fretHeight + 1 + Fretboard.YMARGIN())
-            .attr("r", 6).style("stroke", color).style("fill", "white");
+            .attr("r", 6).style("stroke", color).style("fill", "white")
+            .on("click", function(d) {
+                let fill = this.style.fill;
+                this.setAttribute("stroke-width", 6 - parseInt(this.getAttribute("stroke-width")));
+                this.style.fill = fill == "white"? "lightgray" : "white";
+            })
+                .append("title").text(note.toUpperCase())
+            ;
     }
 }
 
