@@ -1,6 +1,10 @@
 // Music
-var allNotes = ["c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"];
-var allNotesEnh = ["c", "db", "d", "eb", "e", "f", "gb", "g", "ab", "a", "bb", "b"];
+var allNotes = [
+    "c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"
+];
+var allNotesEnh = [
+    "c", "db", "d", "eb", "e", "f", "gb", "g", "ab", "a", "bb", "b"
+];
 var colors = ["red", "green", "blue", "black", "purple", "gray", "orange", "lightgray"];
 
 var Scales = {
@@ -63,14 +67,18 @@ function asNotes(scale) {
 
 
 // Fretboard
-var TUNING_E_4ths = ["e2", "a2", "d3", "g3", "c4", "f4"];
-var TUNING_E_std = ["e2", "a2", "d3", "g3", "b3", "e4"];
-var TUNING_G_open = ["d2", "g2", "d3", "g3", "b4", "d4"];
+var Tunings = {
+    E_4ths: ["e2", "a2", "d3", "g3", "c4", "f4"],
+    E_std: ["e2", "a2", "d3", "g3", "b3", "e4"],
+    Drop_D: ["d2", "a2", "d3", "g3", "b3", "e4"],
+    G_open: ["d2", "g2", "d3", "g3", "b4", "d4"]
+};
+
 
 var Fretboard = {
     frets: 12,
     strings: 6,
-    tuning: TUNING_E_4ths,
+    tuning: Tunings.E_4ths,
     fretWidth: 50,
     fretHeight: 20,
     fretsWithDots: function () {
