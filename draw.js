@@ -198,14 +198,14 @@ function addNoteOnString(note, string, color) {
         svgContainer
             .append("circle")
             .attr("class", "note")
-            .attr("stroke-width", 2)
+            .attr("stroke-width", 1)
             // 0.75 is the offset into the fret (higher is closest to fret)
             .attr("cx", (absPitch - basePitch + 0.75) * Fretboard.fretWidth)
             .attr("cy", (string - 1) * Fretboard.fretHeight + 1 + Fretboard.YMARGIN())
             .attr("r", 6).style("stroke", color).style("fill", "white")
             .on("click", function(d) {
                 let fill = this.style.fill;
-                this.setAttribute("stroke-width", 6 - parseInt(this.getAttribute("stroke-width")));
+                this.setAttribute("stroke-width", 5 - parseInt(this.getAttribute("stroke-width")));
                 this.style.fill = fill == "white"? "lightgray" : "white";
             })
                 .append("title").text(note.toUpperCase())
