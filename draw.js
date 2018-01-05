@@ -17,8 +17,10 @@ var Scales = {
     "major-pentatonic": "c d e g a",
     "major-blues": "c d d# e g a",
     "dom-pentatonic": "c e f g bb",
+    japanese: "c db f g ab",
     // chords
     maj: "c e g",
+    aug: "c e g#",
     min: "c eb g",
     dim: "c eb gb",
     maj7: "c e g b",
