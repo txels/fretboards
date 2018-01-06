@@ -65,6 +65,8 @@ function asNotes(scale) {
     return scaleTransposed.join(" ");
 }
 
+var verbatim = function(d) { return d; };
+
 
 // Fretboard
 var Tunings = {
@@ -75,207 +77,229 @@ var Tunings = {
 };
 
 
-var Fretboard = {
-    frets: 12,
-    strings: 6,
-    tuning: Tunings.E_4ths,
-    fretWidth: 50,
-    fretHeight: 20,
-    fretsWithDots: function () {
+var Fretboard = function(config) {
+    config = config || {};
+    var id = "fretboard-" + Math.floor(Math.random() * 1000000);
+
+    var instance = {
+        frets: config.frets || 12,
+        strings: config.strings || 6,
+        tuning: config.tuning || Tunings.E_4ths,
+        fretWidth: 50,
+        fretHeight: 20
+    };
+
+    instance.fretsWithDots = function () {
         var allDots = [3, 5, 7, 9, 15, 17, 19, 21];
-        return allDots.filter(function(v) { return v <= Fretboard.frets; });
-    },
-    fretsWithDoubleDots: function () {
+        return allDots.filter(function(v) { return v <= instance.frets; });
+    };
+
+    instance.fretsWithDoubleDots = function () {
         var allDots = [12, 24];
-        return allDots.filter(function(v) { return v <= Fretboard.frets; });
-    },
-    fretboardHeight: function () { return (this.strings - 1) * this.fretHeight + 2; },
-    fretboardWidth: function() { return this.frets * this.fretWidth + 2; },
-    XMARGIN: function() { return this.fretWidth; },
-    YMARGIN: function() { return this.fretHeight; },
-};
+        return allDots.filter(function(v) { return v <= instance.frets; });
+    };
 
+    instance.fretboardHeight = function () {
+        return (instance.strings - 1) * instance.fretHeight + 2;
+    };
 
-function makeContainer() {
-    return d3
-        .select("body")
-        .append("svg")
-        .attr("width", Fretboard.fretboardWidth() + Fretboard.XMARGIN() * 2)
-        .attr("height", Fretboard.fretboardHeight() + Fretboard.YMARGIN() * 2);
-}
+    instance.fretboardWidth = function() {
+        return instance.frets * instance.fretWidth + 2;
+    };
 
-var verbatim = function(d) { return d; };
+    instance.XMARGIN = function() { return instance.fretWidth; };
+    instance.YMARGIN = function() { return instance.fretHeight; };
 
+    instance.makeContainer = function() {
+        return d3
+            .select("body")
+            .append("div")
+            .attr("class", "fretboard")
+            .attr("id", id)
+            .append("svg")
+            .attr("width", instance.fretboardWidth() + instance.XMARGIN() * 2)
+            .attr("height", instance.fretboardHeight() + instance.YMARGIN() * 2);
+    };
 
-function drawFrets() {
-    for(i=0; i<=Fretboard.frets; i++) {
-        let x = i * Fretboard.fretWidth + 1 + Fretboard.XMARGIN();
-        svgContainer
-            .append("line")
-            .attr("x1", x)
-            .attr("y1", Fretboard.YMARGIN())
-            .attr("x2", x)
-            .attr("y2", Fretboard.YMARGIN() + Fretboard.fretboardHeight())
-            .attr("stroke", "lightgray")
-            .attr("stroke-width", i==0? 8:2);
-        d3.select("body")
-            .append("p")
-            .attr("class", "fretnum")
-            .style("top", (Fretboard.fretboardHeight() + Fretboard.YMARGIN() + 5) + "px")
-            .style("left", x - 4 + "px")
-            .text(i)
-            ;
-    }
-}
+    instance.svgContainer = instance.makeContainer();
 
-
-function drawStrings() {
-    for(i=0; i<Fretboard.strings; i++) {
-        svgContainer
-            .append("line")
-            .attr("x1", Fretboard.XMARGIN())
-            .attr("y1", i * Fretboard.fretHeight + 1 + Fretboard.YMARGIN())
-            .attr("x2", Fretboard.XMARGIN() + Fretboard.fretboardWidth())
-            .attr("y2", i * Fretboard.fretHeight + 1 + Fretboard.YMARGIN())
-            .attr("stroke", "black")
-            .attr("stroke-width", 1)
-            ;
-    }
-    var placeTuning = function(d, i) { return (Fretboard.strings - i) * Fretboard.fretHeight - 5 + "px"; };
-    d3.select("body")
-        .selectAll(".tuning")
-        .data(Fretboard.tuning)
-        .style("top", placeTuning)
-        .text(verbatim)
-        .enter()
-        .append("p")
-        .attr("class", "tuning")
-        .style("top", placeTuning)
-        .text(verbatim)
-        ;
-}
-
-
-function drawDots() {
-    var p = svgContainer
-        .selectAll("circle")
-        .data(Fretboard.fretsWithDots());
-
-    p.enter()
-        .append("circle")
-        .attr("cx", function(d) { return (d - 1) * Fretboard.fretWidth + Fretboard.fretWidth/2 + Fretboard.XMARGIN(); })
-        .attr("cy", Fretboard.fretboardHeight()/2 + Fretboard.YMARGIN())
-        .attr("r", 4).style("fill", "#ddd");
-
-    var p = svgContainer
-        .selectAll(".octave")
-        .data(Fretboard.fretsWithDoubleDots);
-
-    p.enter()
-        .append("circle")
-        .attr("class", "octave")
-        .attr("cx", function(d) { return (d - 1) * Fretboard.fretWidth + Fretboard.fretWidth/2 + Fretboard.XMARGIN(); })
-        .attr("cy", Fretboard.fretHeight * 3/2 + Fretboard.YMARGIN())
-        .attr("r", 4).style("fill", "#ddd");
-    p.enter()
-        .append("circle")
-        .attr("class", "octave")
-        .attr("cx", function(d) { return (d - 1) * Fretboard.fretWidth + Fretboard.fretWidth/2 + Fretboard.XMARGIN(); })
-        .attr("cy", Fretboard.fretHeight * 7/2 + Fretboard.YMARGIN())
-        .attr("r", 4).style("fill", "#ddd");
-}
-
-
-function drawFretboard() {
-    drawFrets();
-    drawStrings();
-    drawDots();
-}
-
-
-svgContainer = makeContainer();
-drawFretboard();
-
-
-// Notes on fretboard
-
-function addNoteOnString(note, string, color) {
-    var absPitch = absNote(note);
-    color = color || "black";
-    var absString = (Fretboard.strings - string);
-    var basePitch = absNote(Fretboard.tuning[absString]);
-    if((absPitch >= basePitch) && (absPitch <= basePitch + Fretboard.frets)) {
-        svgContainer
-            .append("circle")
-            .attr("class", "note")
-            .attr("stroke-width", 1)
-            // 0.75 is the offset into the fret (higher is closest to fret)
-            .attr("cx", (absPitch - basePitch + 0.75) * Fretboard.fretWidth)
-            .attr("cy", (string - 1) * Fretboard.fretHeight + 1 + Fretboard.YMARGIN())
-            .attr("r", 6).style("stroke", color).style("fill", "white")
-            .on("click", function(d) {
-                let fill = this.style.fill;
-                this.setAttribute("stroke-width", 5 - parseInt(this.getAttribute("stroke-width")));
-                this.style.fill = fill == "white"? "lightgray" : "white";
-            })
-                .append("title").text(note.toUpperCase())
-            ;
-    }
-}
-
-
-function addNote(note, color) {
-    for(string=1; string<=Fretboard.strings; string++) {
-        addNoteOnString(note, string, color);
-    }
-}
-
-
-function addNotes(notes, color) {
-    var allNotes = notes.split(" ");
-    for (i=0; i<allNotes.length; i++) {
-        var showColor = color || colors[i];
-        var note = allNotes[i];
-        for (octave=2; octave<7; octave++) {
-            addNote(note + octave, showColor);
+    instance.drawFrets = function() {
+        for(i=0; i<=instance.frets; i++) {
+            let x = i * instance.fretWidth + 1 + instance.XMARGIN();
+            instance.svgContainer
+                .append("line")
+                .attr("x1", x)
+                .attr("y1", instance.YMARGIN())
+                .attr("x2", x)
+                .attr("y2", instance.YMARGIN() + instance.fretboardHeight())
+                .attr("stroke", "lightgray")
+                .attr("stroke-width", i==0? 8:2);
+            d3.select("#" + id)
+                .append("p")
+                .attr("class", "fretnum")
+                .style("top", (instance.fretboardHeight() + instance.YMARGIN() + 5) + "px")
+                .style("left", x - 4 + "px")
+                .text(i)
+                ;
         }
     }
-}
 
 
-function scale(scaleName) {
-    reset();
-    addNotes(asNotes(scaleName));
-}
+    instance.drawStrings = function() {
+        for(i=0; i<instance.strings; i++) {
+            instance.svgContainer
+                .append("line")
+                .attr("x1", instance.XMARGIN())
+                .attr("y1", i * instance.fretHeight + 1 + instance.YMARGIN())
+                .attr("x2", instance.XMARGIN() + instance.fretboardWidth())
+                .attr("y2", i * instance.fretHeight + 1 + instance.YMARGIN())
+                .attr("stroke", "black")
+                .attr("stroke-width", 1)
+                ;
+        }
+        var placeTuning = function(d, i) {
+            return (instance.strings - i) * instance.fretHeight - 5 + "px";
+        };
+        d3.select("#" + id)
+            .selectAll(".tuning")
+            .data(instance.tuning.slice(0, instance.strings))
+            .style("top", placeTuning)
+            .text(verbatim)
+            .enter()
+            .append("p")
+            .attr("class", "tuning")
+            .style("top", placeTuning)
+            .text(verbatim)
+            ;
+    };
 
 
-function placeNotes(sequence) {
-    // Sequence of string:note
-    // e.g. "6:g2 5:b2 4:d3 3:g3 2:d4 1:g4"
-    reset();
-    var pairs = sequence.split(" ");
-    pairs.forEach(function(pair, i) {
-        let [string, note] = pair.split(":");
-        string = parseInt(string);
-        addNoteOnString(note, string, i==0? "red":"black");
-    });
-}
+    instance.drawDots = function() {
+        var p = instance.svgContainer
+            .selectAll("circle")
+            .data(instance.fretsWithDots());
+
+        p.enter()
+            .append("circle")
+            .attr("cx", function(d) { return (d - 1) * instance.fretWidth + instance.fretWidth/2 + instance.XMARGIN(); })
+            .attr("cy", instance.fretboardHeight()/2 + instance.YMARGIN())
+            .attr("r", 4).style("fill", "#ddd");
+
+        var p = instance.svgContainer
+            .selectAll(".octave")
+            .data(instance.fretsWithDoubleDots);
+
+        p.enter()
+            .append("circle")
+            .attr("class", "octave")
+            .attr("cx", function(d) { return (d - 1) * instance.fretWidth + instance.fretWidth/2 + instance.XMARGIN(); })
+            .attr("cy", instance.fretHeight * 3/2 + instance.YMARGIN())
+            .attr("r", 4).style("fill", "#ddd");
+        p.enter()
+            .append("circle")
+            .attr("class", "octave")
+            .attr("cx", function(d) { return (d - 1) * instance.fretWidth + instance.fretWidth/2 + instance.XMARGIN(); })
+            .attr("cy", instance.fretHeight * 7/2 + instance.YMARGIN())
+            .attr("r", 4).style("fill", "#ddd");
+    };
 
 
-function resetNotes() {
-    svgContainer
-        .selectAll(".note")
-        .remove();
-}
+    instance.draw = function() {
+        instance.drawFrets();
+        instance.drawStrings();
+        instance.drawDots();
+    };
 
 
-function reset() {
-    d3.selectAll(".fretnum,.tuning").remove();
-    svgContainer
-        .selectAll("line")
-        .remove();
-    svgContainer
-        .selectAll("circle")
-        .remove();
-    drawFretboard();
-}
+    // Notes on fretboard
+
+    instance.addNoteOnString = function(note, string, color) {
+        var absPitch = absNote(note);
+        color = color || "black";
+        var absString = (instance.strings - string);
+        var basePitch = absNote(instance.tuning[absString]);
+        if((absPitch >= basePitch) && (absPitch <= basePitch + instance.frets)) {
+            instance.svgContainer
+                .append("circle")
+                .attr("class", "note")
+                .attr("stroke-width", 1)
+                // 0.75 is the offset into the fret (higher is closest to fret)
+                .attr("cx", (absPitch - basePitch + 0.75) * instance.fretWidth)
+                .attr("cy", (string - 1) * instance.fretHeight + 1 + instance.YMARGIN())
+                .attr("r", 6).style("stroke", color).style("fill", "white")
+                .on("click", function(d) {
+                    let fill = this.style.fill;
+                    this.setAttribute("stroke-width", 5 - parseInt(this.getAttribute("stroke-width")));
+                    this.style.fill = fill == "white"? "lightgray" : "white";
+                })
+                    .append("title").text(note.toUpperCase())
+                ;
+        }
+    };
+
+
+    instance.addNote = function(note, color) {
+        for(string=1; string<=instance.strings; string++) {
+            instance.addNoteOnString(note, string, color);
+        }
+    };
+
+
+    instance.addNotes = function(notes, color) {
+        var allNotes = notes.split(" ");
+        for (i=0; i<allNotes.length; i++) {
+            var showColor = color || colors[i];
+            var note = allNotes[i];
+            for (octave=2; octave<7; octave++) {
+                instance.addNote(note + octave, showColor);
+            }
+        }
+    };
+
+
+    instance.scale = function(scaleName) {
+        instance.clear();
+        instance.addNotes(asNotes(scaleName));
+    };
+
+
+    instance.placeNotes = function(sequence) {
+        // Sequence of string:note
+        // e.g. "6:g2 5:b2 4:d3 3:g3 2:d4 1:g4"
+        instance.clear();
+        var pairs = sequence.split(" ");
+        pairs.forEach(function(pair, i) {
+            let [string, note] = pair.split(":");
+            string = parseInt(string);
+            instance.addNoteOnString(note, string, i==0? "red":"black");
+        });
+    };
+
+
+    instance.clearNotes = function() {
+        instance.svgContainer
+            .selectAll(".note")
+            .remove();
+    };
+
+
+    instance.clear = function() {
+        d3.select("#" + id).selectAll(".fretnum,.tuning").remove();
+        instance.svgContainer
+            .selectAll("line")
+            .remove();
+        instance.svgContainer
+            .selectAll("circle")
+            .remove();
+        instance.draw();
+    };
+
+    instance.delete = function() {
+        d3.select("#" + id).remove();
+    };
+
+    instance.draw();
+
+    return instance;
+};
+
