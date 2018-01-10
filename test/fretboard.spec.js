@@ -45,3 +45,26 @@ describe('Music scales', () => {
     });
 });
 
+
+describe('instrument helper factories', () => {
+    it('6-string guitar is the default', () => {
+        let g = Guitar();
+        expect(g.strings).toEqual(6);
+        expect(g.frets).toEqual(12);
+        expect(g.tuning).toEqual(Tunings.guitar6.standard);
+    });
+
+    it('7-string guitar', () => {
+        let g = Guitar(7);
+        expect(g.strings).toEqual(7);
+        expect(g.frets).toEqual(12);
+        expect(g.tuning).toEqual(Tunings.guitar7.standard);
+    });
+
+    it('bass', () => {
+        let b = Bass();
+        expect(b.strings).toEqual(4);
+        expect(b.frets).toEqual(12);
+        expect(b.tuning).toEqual(Tunings.bass4.standard);
+    });
+});

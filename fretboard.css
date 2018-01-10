@@ -1,0 +1,21 @@
+body, p {
+    font-family: Georgia, Times New Roman;
+}
+
+.fretboard {
+    position: relative;
+}
+.tuning, .fretnum {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica;
+    text-transform: uppercase;
+}
+.tuning {
+    left: 4px;
+    font-size: 10px;
+}
+.fretnum {
+    font-size: 8px;
+}

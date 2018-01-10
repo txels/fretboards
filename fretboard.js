@@ -71,17 +71,17 @@ var verbatim = function(d) { return d; };
 // Fretboard
 var Tunings = {
     bass4: {
-        E_std: ["e1", "a1", "d2", "g2", "b2", "e3"]
+        standard: ["e1", "a1", "d2", "g2", "b2", "e3"]
     },
     guitar6: {
+        standard: ["e2", "a2", "d3", "g3", "b3", "e4"],
         E_4ths: ["e2", "a2", "d3", "g3", "c4", "f4"],
-        E_std: ["e2", "a2", "d3", "g3", "b3", "e4"],
         Drop_D: ["d2", "a2", "d3", "g3", "b3", "e4"],
         G_open: ["d2", "g2", "d3", "g3", "b4", "d4"]
     },
     guitar7: {
-        E_4ths: ["b2", "e2", "a2", "d3", "g3", "c3", "f4"],
-        E_std: ["b2", "e2", "a2", "d3", "g3", "b3", "e4"]
+        standard: ["b2", "e2", "a2", "d3", "g3", "b3", "e4"],
+        E_4ths: ["b2", "e2", "a2", "d3", "g3", "c3", "f4"]
     }
 };
 
@@ -291,7 +291,6 @@ var Fretboard = function(config) {
     instance.placeNotes = function(sequence) {
         // Sequence of string:note
         // e.g. "6:g2 5:b2 4:d3 3:g3 2:d4 1:g4"
-        instance.clear();
         var pairs = sequence.split(" ");
         pairs.forEach(function(pair, i) {
             let [string, note] = pair.split(":");
@@ -328,3 +327,23 @@ var Fretboard = function(config) {
     return instance;
 };
 
+
+function Guitar(strings, frets) {
+    strings = strings || 6;
+    frets = frets || 12;
+    return Fretboard({
+        strings: strings,
+        frets: frets,
+        tuning: Tunings['guitar' + strings].standard
+    });
+}
+
+function Bass(strings, frets) {
+    strings = strings || 4;
+    frets = frets || 12;
+    return Fretboard({
+        strings: strings,
+        frets: frets,
+        tuning: Tunings['bass' + strings].standard
+    });
+}
