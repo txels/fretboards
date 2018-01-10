@@ -16,7 +16,7 @@ module.exports = function(config) {
     files: [
         "d3.min.js",
         "draw.js",
-        "draw.spec.js"
+        "test/*.spec.js"
     ],
 
 

@@ -70,10 +70,19 @@ var verbatim = function(d) { return d; };
 
 // Fretboard
 var Tunings = {
-    E_4ths: ["e2", "a2", "d3", "g3", "c4", "f4"],
-    E_std: ["e2", "a2", "d3", "g3", "b3", "e4"],
-    Drop_D: ["d2", "a2", "d3", "g3", "b3", "e4"],
-    G_open: ["d2", "g2", "d3", "g3", "b4", "d4"]
+    bass4: {
+        E_std: ["e1", "a1", "d2", "g2", "b2", "e3"]
+    },
+    guitar6: {
+        E_4ths: ["e2", "a2", "d3", "g3", "c4", "f4"],
+        E_std: ["e2", "a2", "d3", "g3", "b3", "e4"],
+        Drop_D: ["d2", "a2", "d3", "g3", "b3", "e4"],
+        G_open: ["d2", "g2", "d3", "g3", "b4", "d4"]
+    },
+    guitar7: {
+        E_4ths: ["b2", "e2", "a2", "d3", "g3", "c3", "f4"],
+        E_std: ["b2", "e2", "a2", "d3", "g3", "b3", "e4"]
+    }
 };
 
 
@@ -84,7 +93,7 @@ var Fretboard = function(config) {
     var instance = {
         frets: config.frets || 12,
         strings: config.strings || 6,
-        tuning: config.tuning || Tunings.E_4ths,
+        tuning: config.tuning || Tunings.guitar6.E_4ths,
         fretWidth: 50,
         fretHeight: 20
     };
@@ -124,7 +133,7 @@ var Fretboard = function(config) {
     instance.svgContainer = instance.makeContainer();
 
     instance.drawFrets = function() {
-        for(i=0; i<=instance.frets; i++) {
+        for(var i=0; i<=instance.frets; i++) {
             let x = i * instance.fretWidth + 1 + instance.XMARGIN();
             instance.svgContainer
                 .append("line")
@@ -146,7 +155,7 @@ var Fretboard = function(config) {
 
 
     instance.drawStrings = function() {
-        for(i=0; i<instance.strings; i++) {
+        for(var i=0; i<instance.strings; i++) {
             instance.svgContainer
                 .append("line")
                 .attr("x1", instance.XMARGIN())
@@ -175,14 +184,30 @@ var Fretboard = function(config) {
 
 
     instance.drawDots = function() {
+
         var p = instance.svgContainer
             .selectAll("circle")
             .data(instance.fretsWithDots());
 
+        function dotX(d) {
+            return (d - 1) * instance.fretWidth + instance.fretWidth/2 + instance.XMARGIN();
+        }
+
+        function dotY(ylocation) { 
+            let margin = instance.YMARGIN();
+
+            if(instance.strings % 2 == 0) {
+
+                return ((instance.strings + 3)/2 - ylocation) * instance.fretHeight + margin;
+            } else {
+                return instance.fretboardHeight() * ylocation/4 + margin;
+            }
+        }
+
         p.enter()
             .append("circle")
-            .attr("cx", function(d) { return (d - 1) * instance.fretWidth + instance.fretWidth/2 + instance.XMARGIN(); })
-            .attr("cy", instance.fretboardHeight()/2 + instance.YMARGIN())
+            .attr("cx", dotX)
+            .attr("cy", dotY(2))
             .attr("r", 4).style("fill", "#ddd");
 
         var p = instance.svgContainer
@@ -192,22 +217,22 @@ var Fretboard = function(config) {
         p.enter()
             .append("circle")
             .attr("class", "octave")
-            .attr("cx", function(d) { return (d - 1) * instance.fretWidth + instance.fretWidth/2 + instance.XMARGIN(); })
-            .attr("cy", instance.fretHeight * 3/2 + instance.YMARGIN())
+            .attr("cx", dotX)
+            .attr("cy", dotY(3))
             .attr("r", 4).style("fill", "#ddd");
         p.enter()
             .append("circle")
             .attr("class", "octave")
-            .attr("cx", function(d) { return (d - 1) * instance.fretWidth + instance.fretWidth/2 + instance.XMARGIN(); })
-            .attr("cy", instance.fretHeight * 7/2 + instance.YMARGIN())
+            .attr("cx", dotX)
+            .attr("cy", dotY(1))
             .attr("r", 4).style("fill", "#ddd");
     };
 
 
     instance.draw = function() {
         instance.drawFrets();
-        instance.drawStrings();
         instance.drawDots();
+        instance.drawStrings();
     };
 
 
@@ -239,7 +264,7 @@ var Fretboard = function(config) {
 
 
     instance.addNote = function(note, color) {
-        for(string=1; string<=instance.strings; string++) {
+        for(var string=1; string<=instance.strings; string++) {
             instance.addNoteOnString(note, string, color);
         }
     };
@@ -247,10 +272,10 @@ var Fretboard = function(config) {
 
     instance.addNotes = function(notes, color) {
         var allNotes = notes.split(" ");
-        for (i=0; i<allNotes.length; i++) {
+        for (var i=0; i<allNotes.length; i++) {
             var showColor = color || colors[i];
             var note = allNotes[i];
-            for (octave=2; octave<7; octave++) {
+            for (var octave=1; octave<7; octave++) {
                 instance.addNote(note + octave, showColor);
             }
         }
