@@ -98,55 +98,53 @@ var Fretboard = function(config) {
         fretHeight: 20
     };
 
-    instance.fretsWithDots = function () {
+    var fretsWithDots = function () {
         var allDots = [3, 5, 7, 9, 15, 17, 19, 21];
         return allDots.filter(function(v) { return v <= instance.frets; });
     };
 
-    instance.fretsWithDoubleDots = function () {
+    var fretsWithDoubleDots = function () {
         var allDots = [12, 24];
         return allDots.filter(function(v) { return v <= instance.frets; });
     };
 
-    instance.fretboardHeight = function () {
+    var fretboardHeight = function () {
         return (instance.strings - 1) * instance.fretHeight + 2;
     };
 
-    instance.fretboardWidth = function() {
+    var fretboardWidth = function() {
         return instance.frets * instance.fretWidth + 2;
     };
 
-    instance.XMARGIN = function() { return instance.fretWidth; };
-    instance.YMARGIN = function() { return instance.fretHeight; };
+    var XMARGIN = function() { return instance.fretWidth; };
+    var YMARGIN = function() { return instance.fretHeight; };
 
-    instance.makeContainer = function() {
+    var makeContainer = function() {
         return d3
             .select("body")
             .append("div")
             .attr("class", "fretboard")
             .attr("id", id)
             .append("svg")
-            .attr("width", instance.fretboardWidth() + instance.XMARGIN() * 2)
-            .attr("height", instance.fretboardHeight() + instance.YMARGIN() * 2);
+            .attr("width", fretboardWidth() + XMARGIN() * 2)
+            .attr("height", fretboardHeight() + YMARGIN() * 2);
     };
 
-    instance.svgContainer = instance.makeContainer();
-
-    instance.drawFrets = function() {
+    var drawFrets = function() {
         for(var i=0; i<=instance.frets; i++) {
-            let x = i * instance.fretWidth + 1 + instance.XMARGIN();
+            let x = i * instance.fretWidth + 1 + XMARGIN();
             instance.svgContainer
                 .append("line")
                 .attr("x1", x)
-                .attr("y1", instance.YMARGIN())
+                .attr("y1", YMARGIN())
                 .attr("x2", x)
-                .attr("y2", instance.YMARGIN() + instance.fretboardHeight())
+                .attr("y2", YMARGIN() + fretboardHeight())
                 .attr("stroke", "lightgray")
                 .attr("stroke-width", i==0? 8:2);
             d3.select("#" + id)
                 .append("p")
                 .attr("class", "fretnum")
-                .style("top", (instance.fretboardHeight() + instance.YMARGIN() + 5) + "px")
+                .style("top", (fretboardHeight() + YMARGIN() + 5) + "px")
                 .style("left", x - 4 + "px")
                 .text(i)
                 ;
@@ -154,14 +152,14 @@ var Fretboard = function(config) {
     }
 
 
-    instance.drawStrings = function() {
+    var drawStrings = function() {
         for(var i=0; i<instance.strings; i++) {
             instance.svgContainer
                 .append("line")
-                .attr("x1", instance.XMARGIN())
-                .attr("y1", i * instance.fretHeight + 1 + instance.YMARGIN())
-                .attr("x2", instance.XMARGIN() + instance.fretboardWidth())
-                .attr("y2", i * instance.fretHeight + 1 + instance.YMARGIN())
+                .attr("x1", XMARGIN())
+                .attr("y1", i * instance.fretHeight + 1 + YMARGIN())
+                .attr("x2", XMARGIN() + fretboardWidth())
+                .attr("y2", i * instance.fretHeight + 1 + YMARGIN())
                 .attr("stroke", "black")
                 .attr("stroke-width", 1)
                 ;
@@ -183,24 +181,24 @@ var Fretboard = function(config) {
     };
 
 
-    instance.drawDots = function() {
+    var drawDots = function() {
 
         var p = instance.svgContainer
             .selectAll("circle")
-            .data(instance.fretsWithDots());
+            .data(fretsWithDots());
 
         function dotX(d) {
-            return (d - 1) * instance.fretWidth + instance.fretWidth/2 + instance.XMARGIN();
+            return (d - 1) * instance.fretWidth + instance.fretWidth/2 + XMARGIN();
         }
 
         function dotY(ylocation) { 
-            let margin = instance.YMARGIN();
+            let margin = YMARGIN();
 
             if(instance.strings % 2 == 0) {
 
                 return ((instance.strings + 3)/2 - ylocation) * instance.fretHeight + margin;
             } else {
-                return instance.fretboardHeight() * ylocation/4 + margin;
+                return fretboardHeight() * ylocation/4 + margin;
             }
         }
 
@@ -212,7 +210,7 @@ var Fretboard = function(config) {
 
         var p = instance.svgContainer
             .selectAll(".octave")
-            .data(instance.fretsWithDoubleDots);
+            .data(fretsWithDoubleDots);
 
         p.enter()
             .append("circle")
@@ -229,10 +227,13 @@ var Fretboard = function(config) {
     };
 
 
+    instance.svgContainer = makeContainer();
+
     instance.draw = function() {
-        instance.drawFrets();
-        instance.drawDots();
-        instance.drawStrings();
+        drawFrets();
+        drawDots();
+        drawStrings();
+        return instance;
     };
 
 
@@ -250,7 +251,7 @@ var Fretboard = function(config) {
                 .attr("stroke-width", 1)
                 // 0.75 is the offset into the fret (higher is closest to fret)
                 .attr("cx", (absPitch - basePitch + 0.75) * instance.fretWidth)
-                .attr("cy", (string - 1) * instance.fretHeight + 1 + instance.YMARGIN())
+                .attr("cy", (string - 1) * instance.fretHeight + 1 + YMARGIN())
                 .attr("r", 6).style("stroke", color).style("fill", "white")
                 .on("click", function(d) {
                     let fill = this.style.fill;
@@ -260,6 +261,7 @@ var Fretboard = function(config) {
                     .append("title").text(note.toUpperCase())
                 ;
         }
+        return instance;
     };
 
 
@@ -267,6 +269,8 @@ var Fretboard = function(config) {
         for(var string=1; string<=instance.strings; string++) {
             instance.addNoteOnString(note, string, color);
         }
+
+        return instance;
     };
 
 
@@ -279,12 +283,16 @@ var Fretboard = function(config) {
                 instance.addNote(note + octave, showColor);
             }
         }
+
+        return instance;
     };
 
 
     instance.scale = function(scaleName) {
         instance.clear();
         instance.addNotes(asNotes(scaleName));
+
+        return instance;
     };
 
 
@@ -295,8 +303,10 @@ var Fretboard = function(config) {
         pairs.forEach(function(pair, i) {
             let [string, note] = pair.split(":");
             string = parseInt(string);
-            instance.addNoteOnString(note, string, i==0? "red":"black");
+            instance.addNoteOnString(note, string, i==0? "red" : "black");
         });
+
+        return instance;
     };
 
 
@@ -304,6 +314,8 @@ var Fretboard = function(config) {
         instance.svgContainer
             .selectAll(".note")
             .remove();
+
+        return instance;
     };
 
 
@@ -316,15 +328,15 @@ var Fretboard = function(config) {
             .selectAll("circle")
             .remove();
         instance.draw();
+
+        return instance;
     };
 
     instance.delete = function() {
         d3.select("#" + id).remove();
     };
 
-    instance.draw();
-
-    return instance;
+    return instance.draw();
 };
 
 
