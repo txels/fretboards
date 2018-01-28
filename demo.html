@@ -38,62 +38,34 @@ tuning.
 Look at this basic layout for one octave of G major, if
 you start from your first finger:
 </p>
-<script>
-    var fb = Fretboard({frets: 8});
-    fb.placeNotes("6:g2 6:a2 6:b2 5:c3 5:d3 5:e3 4:f#3");
-    fb.placeNotes("4:g3");
-</script>
+<div class="fb-container" data-notes="6:g2 6:a2 6:b2 5:c3 5:d3 5:e3 4:f#3; 4:g3"></div>
 <p>
 Starting from your second finger:
 </p>
-<script>
-    var fb = Fretboard({frets: 8});
-    fb.placeNotes("6:g2 6:a2 5:b2 5:c3 5:d3 4:e3 4:f#3");
-    fb.placeNotes("4:g3");
-</script>
+<div class="fb-container" data-notes="6:g2 6:a2 5:b2 5:c3 5:d3 4:e3 4:f#3; 4:g3"></div>
 <p>
 Starting from your fourth finger:
 </p>
-<script>
-    var fb = Fretboard({frets: 8});
-    fb.placeNotes("4:g3 3:a3 3:b3 3:c4 2:d4 2:e4 2:f#4");
-    fb.placeNotes("1:g4");
-</script>
-
+<div class="fb-container" data-notes="4:g3 3:a3 3:b3 3:c4 2:d4 2:e4 2:f#4; 1:g4"></div>
 <p>
 All of the notes of the G major scale based on a fixed position starting
 on the 3rd fret, which you can view as chaining the former fingerings:
 </p>
-<script>
-    var gMajor = Fretboard({frets: 8});
-    gMajor.placeNotes("6:g2 6:a2 6:b2 5:c3 5:d3 5:e3 4:f#3");
-    gMajor.placeNotes("4:g3 4:a3 3:b3 3:c4 3:d4 2:e4 2:f#4");
-    gMajor.placeNotes("2:g4 1:a4 1:b4 1:c5");
-</script>
-
+<div class="fb-container" data-notes="6:g2 6:a2 6:b2 5:c3 5:d3 5:e3 4:f#3; 4:g3 4:a3 3:b3 3:c4 3:d4 2:e4 2:f#4; 2:g4 1:a4 1:b4 1:c5"></div>
 <p>
 Similarly, but based on the 2nd fret:
 </p>
-<script>
-    var gMajor = Fretboard({frets: 8});
-    gMajor.placeNotes("6:g2 6:f#2 6:a2 5:b2 5:c3 5:d3 4:e3 4:f#3");
-    gMajor.placeNotes("4:g3 3:a3 3:b3 3:c4 2:d4 2:e4 2:f#4");
-    gMajor.placeNotes("1:g4 1:a4 1:b4");
-</script>
-
+<div class="fb-container" data-notes="6:g2 6:f#2 6:a2 5:b2 5:c3 5:d3 4:e3 4:f#3; 4:g3 3:a3 3:b3 3:c4 2:d4 2:e4 2:f#4; 1:g4 1:a4 1:b4"></div>
 <p>
 One of the things you may have started to notice is that all scales
 that derive from a major scale can be comfortably played using
 3 notes per string.
 </p>
+<p>
+As a final example, this is C Major all over the first twelve frets:
+</p>
+<div class="fb-container" data-frets="12" data-notes="c major"></div>
 
-<h2>Other examples</h2>
-<div class="fb-container" data-notes="c major"></div>
-<div class="fb-container" data-notes="c lydian"></div>
-<div class="fb-container" data-notes="g dorian"></div>
-
-
-<!-- fill up fretboards based on html attrs -->
 <script>
     Fretboard.drawAll('.fb-container');
 </script>

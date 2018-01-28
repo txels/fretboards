@@ -36,6 +36,19 @@ var Scales = {
 };
 
 
+function whatIs(sequence) {
+    let sections = sequence.split(" ");
+    if (sections.length === 2 && typeof Scales[sections[1]] == "string") {
+        return "scale";
+    }
+    if (sections[0].indexOf(":") > 0) {
+        return "placeNotes";
+    } else {
+        return "addNotes";
+    }
+}
+
+
 function asOffset(note) {
     note = note.toLowerCase();
     var offset = allNotes.indexOf(note);
@@ -231,7 +244,7 @@ var Fretboard = function(config) {
 
     instance.svgContainer = makeContainer(where);
 
-    instance.draw = function() {
+    instance.drawBoard = function() {
         drawFrets();
         drawDots();
         drawStrings();
@@ -301,7 +314,7 @@ var Fretboard = function(config) {
     instance.placeNotes = function(sequence) {
         // Sequence of string:note
         // e.g. "6:g2 5:b2 4:d3 3:g3 2:d4 1:g4"
-        var pairs = sequence.split(" ");
+        let pairs = sequence.split(" ");
         pairs.forEach(function(pair, i) {
             let [string, note] = pair.split(":");
             string = parseInt(string);
@@ -309,6 +322,16 @@ var Fretboard = function(config) {
         });
 
         return instance;
+    };
+
+
+    instance.drawNotes = function(something) {
+        let sections = something.split(";");
+        sections.forEach(function(section) {
+            section = section.trim();
+            let what = whatIs(section);
+            instance[what](section);
+        });
     };
 
 
@@ -329,7 +352,7 @@ var Fretboard = function(config) {
         instance.svgContainer
             .selectAll("circle")
             .remove();
-        instance.draw();
+        instance.drawBoard();
 
         return instance;
     };
@@ -338,17 +361,20 @@ var Fretboard = function(config) {
         d3.select("#" + id).remove();
     };
 
-    return instance.draw();
+    return instance.drawBoard();
 };
 
 
 Fretboard.drawAll = function(selector) {
-    let fbs = document.querySelectorAll(selector);
+    let fretboards = document.querySelectorAll(selector);
 
-    fbs.forEach(function(e) {
-        let notes = e.dataset['notes'];
-        let fb = Fretboard({frets: 8, where: e});
-        fb.scale(notes);
+    fretboards.forEach(function(e) {
+        let frets = parseInt(e.dataset["frets"]) || 8;
+        let notes = e.dataset["notes"];
+        let fretboard = Fretboard({frets: frets, where: e});
+        if (notes) {
+            fretboard.drawNotes(notes);
+        }
     });
 };
 
@@ -359,7 +385,7 @@ function Guitar(strings, frets) {
     return Fretboard({
         strings: strings,
         frets: frets,
-        tuning: Tunings['guitar' + strings].standard
+        tuning: Tunings["guitar" + strings].standard
     });
 }
 
@@ -369,6 +395,6 @@ function Bass(strings, frets) {
     return Fretboard({
         strings: strings,
         frets: frets,
-        tuning: Tunings['bass' + strings].standard
+        tuning: Tunings["bass" + strings].standard
     });
 }

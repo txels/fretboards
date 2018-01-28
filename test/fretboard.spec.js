@@ -43,6 +43,22 @@ describe('Music scales', () => {
             expect(asNotes('g# major')).toEqual('g# a# c c# d# f g');
         });
     });
+
+    describe('auto-detect what to draw', () => {
+        it('a scale/chord', () => {
+            expect(whatIs('a major')).toEqual('scale');
+            expect(whatIs('eb 7')).toEqual('scale');
+        });
+
+        it('notes by name', () => {
+            expect(whatIs('a b')).toEqual('addNotes');
+            expect(whatIs('c# d# f g a#')).toEqual('addNotes');
+        });
+
+        it('specifically placed notes', () => {
+            expect(whatIs('5:c3 4:e3 3:bb3 2:d4 1:g4')).toEqual('placeNotes');
+        });
+    });
 });
 
 
