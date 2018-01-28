@@ -20,6 +20,7 @@ var Scales = {
     "minor-blues": "c eb f f# g bb",
     "major-pentatonic": "c d e g a",
     "major-blues": "c d d# e g a",
+    "composite-blues": "c d d# e f f# g a bb",
     "dom-pentatonic": "c e f g bb",
     japanese: "c db f g ab",
     // chords
@@ -325,7 +326,7 @@ var Fretboard = function(config) {
     };
 
 
-    instance.drawNotes = function(something) {
+    instance.draw = function(something) {
         let sections = something.split(";");
         sections.forEach(function(section) {
             section = section.trim();
@@ -373,7 +374,7 @@ Fretboard.drawAll = function(selector) {
         let notes = e.dataset["notes"];
         let fretboard = Fretboard({frets: frets, where: e});
         if (notes) {
-            fretboard.drawNotes(notes);
+            fretboard.draw(notes);
         }
     });
 };
