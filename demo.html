@@ -25,10 +25,7 @@ As an example, this is what a G major scale looks like on
 a guitar tuned in E 4ths (the root notes, G, are red). Note
 the symmetry of the patterns repeating all over the fingerboard:
 </p>
-<script>
-    var fb = Fretboard();
-    fb.scale("g major");
-</script>
+<div class="fb-container" data-notes="g major"></div>
 <p>
 Notice how e.g. starting from any of the G notes with a given
 finger, you can play the exact same fingering pattern starting
@@ -90,6 +87,16 @@ that derive from a major scale can be comfortably played using
 3 notes per string.
 </p>
 
+<h2>Other examples</h2>
+<div class="fb-container" data-notes="c major"></div>
+<div class="fb-container" data-notes="c lydian"></div>
+<div class="fb-container" data-notes="g dorian"></div>
+
+
+<!-- fill up fretboards based on html attrs -->
+<script>
+    Fretboard.drawAll('.fb-container');
+</script>
 </body>
 
 </html>

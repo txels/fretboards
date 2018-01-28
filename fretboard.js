@@ -88,6 +88,8 @@ var Tunings = {
 
 var Fretboard = function(config) {
     config = config || {};
+    var where = config.where || "body";
+
     var id = "fretboard-" + Math.floor(Math.random() * 1000000);
 
     var instance = {
@@ -119,9 +121,9 @@ var Fretboard = function(config) {
     var XMARGIN = function() { return instance.fretWidth; };
     var YMARGIN = function() { return instance.fretHeight; };
 
-    var makeContainer = function() {
+    var makeContainer = function(elem) {
         return d3
-            .select("body")
+            .select(elem)
             .append("div")
             .attr("class", "fretboard")
             .attr("id", id)
@@ -227,7 +229,7 @@ var Fretboard = function(config) {
     };
 
 
-    instance.svgContainer = makeContainer();
+    instance.svgContainer = makeContainer(where);
 
     instance.draw = function() {
         drawFrets();
@@ -337,6 +339,17 @@ var Fretboard = function(config) {
     };
 
     return instance.draw();
+};
+
+
+Fretboard.drawAll = function(selector) {
+    let fbs = document.querySelectorAll(selector);
+
+    fbs.forEach(function(e) {
+        let notes = e.dataset['notes'];
+        let fb = Fretboard({frets: 8, where: e});
+        fb.scale(notes);
+    });
 };
 
 
