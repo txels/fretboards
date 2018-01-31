@@ -34,3 +34,6 @@ example below:
     Fretboard.drawAll('.fb-container');
 </script>
 ```
+
+For a live example of how fretboards look like, check out this
+[bl.ocks.org block](https://bl.ocks.org/txels/9d5bb78c606285cae893ede79542cd9a)
