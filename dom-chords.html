@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <link rel="stylesheet" href="fretboard.css"/>
+    <script src="fretboard.js"></script>
+</head>
+
+<body>
+
+<h1>Dominant Chord Fingering Study</h1>
+
+<h2>G Dom 7h inversions sorted by lead note</h2>
+Collection of inversion on the top 4 strings, no repeated notes.
+
+<h3>root</h3>
+G7
+<div class="fb-container" data-frets="14" data-notes="4:f3 3:b3 2:d4 1:g4"></div>
+G7(13)
+<div class="fb-container" data-frets="14" data-notes="4:f3 3:b3 2:e4 1:g4"></div>
+G7(omit 5)
+<div class="fb-container" data-frets="14" data-notes="4:g3 3:b3 2:f4 1:g4"></div>
+
+<h3>9th</h3>
+G7(9)
+<div class="fb-container" data-frets="14" data-notes="4:f3 3:b3 2:d4 1:a4"></div>
+G7(9 omit 5)
+<div class="fb-container" data-frets="14" data-notes="4:g3 3:b3 2:f4 1:a4"></div>
+G7(9 13)
+<div class="fb-container" data-frets="14" data-notes="4:f3 3:b3 2:e4 1:a4"></div>
+
+<h3>#9th</h3>
+G7(#9)
+<div class="fb-container" data-frets="14" data-notes="4:f3 3:b3 2:d4 1:a#4"></div>
+G7(#9 omit 5)
+<div class="fb-container" data-frets="14" data-notes="4:g3 3:b3 2:f4 1:a#4"></div>
+G7(#9 13)
+<div class="fb-container" data-frets="14" data-notes="4:f3 3:b3 2:e4 1:a#4"></div>
+
+<h3>3rd</h3>
+G7
+<div class="fb-container" data-frets="14" data-notes="4:g3 3:d4 2:f4 1:b4"></div>
+G7(9)
+<div class="fb-container" data-frets="14" data-notes="4:a3 3:d4 2:f4 1:b4"></div>
+
+<h3>11th</h3>
+G7(sus4)
+<div class="fb-container" data-frets="14" data-notes="4:g3 3:d4 2:f4 1:c5"></div>
+G7(9 sus4)
+<div class="fb-container" data-frets="14" data-notes="4:a3 3:d4 2:f4 1:c5"></div>
+
+<h3>5th</h3>
+G7
+<div class="fb-container" data-frets="14" data-notes="4:b3 3:f4 2:g4 1:d5"></div>
+G7(9)
+<div class="fb-container" data-frets="14" data-notes="4:b3 3:f4 2:a4 1:d5"></div>
+G7(#9)
+<div class="fb-container" data-frets="14" data-notes="4:b3 3:f4 2:a#4 1:d5"></div>
+
+<h3>6th/13th</h3>
+G7(9 13)
+<div class="fb-container" data-frets="14" data-notes="4:b3 3:f4 2:a4 1:e5"></div>
+G7(#9 13)
+<div class="fb-container" data-frets="14" data-notes="4:b3 3:f4 2:a#4 1:e5"></div>
+G6
+<div class="fb-container" data-frets="14" data-notes="4:d4 3:g4 2:b4 1:e5"></div>
+G6(9)
+<div class="fb-container" data-frets="14" data-notes="4:d4 3:a4 2:b4 1:e5"></div>
+
+<h3>7th</h3>
+G7
+<div class="fb-container" data-frets="14" data-notes="4:d4 3:g4 2:b4 1:f5"></div>
+G7(9)
+<div class="fb-container" data-frets="14" data-notes="4:d4 3:a4 2:b4 1:f5"></div>
+G7(9 13)
+<div class="fb-container" data-frets="14" data-notes="4:e4 3:a4 2:b4 1:f5"></div>
+
+<script>
+    Fretboard.drawAll('.fb-container');
+</script>
+</body>
+
+</html>

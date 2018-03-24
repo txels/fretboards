@@ -319,7 +319,7 @@ var Fretboard = function(config) {
         pairs.forEach(function(pair, i) {
             let [string, note] = pair.split(":");
             string = parseInt(string);
-            instance.addNoteOnString(note, string, i==0? "red" : "black");
+            instance.addNoteOnString(note, string);  // , i==0? "red" : "black");
         });
 
         return instance;

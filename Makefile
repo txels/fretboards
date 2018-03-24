@@ -3,3 +3,9 @@ run:
 
 test:
 	npm test
+
+readme.html: README.md
+	grip README.md --export readme.html
+
+publish:
+	scp *.{html,js,css} txels.com:fretboard/
