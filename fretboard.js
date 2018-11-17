@@ -3,7 +3,7 @@ var allNotes = [
     "c", "c#", "d", "d#", "e", "f", "f#", "g", "g#", "a", "a#", "b"
 ];
 var allNotesEnh = [
-    "c", "db", "d", "eb", "e", "f", "gb", "g", "ab", "a", "bb", "b"
+    "c", "db", "d", "eb", "fb", "f", "gb", "g", "ab", "a", "bb", "cb"
 ];
 var colors = ["red", "green", "blue", "black", "purple", "gray", "orange", "lightgray"];
 
@@ -16,6 +16,8 @@ var Scales = {
     aeolian: "c d eb f g ab bb",
     phrygian: "c db eb f g ab bb",
     locrian: "c db eb f gb ab bb",
+    "harmonic-minor": "c d eb f g ab b",
+    "melodic-minor": "c d eb f g a b",
     "minor-pentatonic": "c eb f g bb",
     "minor-blues": "c eb f f# g bb",
     "major-pentatonic": "c d e g a",
@@ -69,6 +71,13 @@ function absNote(note) {
 }
 
 
+function noteName(absPitch) {
+    let octave = Math.floor(absPitch / 12);
+    let note = allNotes[absPitch % 12];
+    return note + octave.toString();
+}
+
+
 function asNotes(scale) {
     let [root, type] = scale.split(" ");
     var scaleInC = Scales._(type);
@@ -108,15 +117,16 @@ var Fretboard = function(config) {
 
     var instance = {
         frets: config.frets || 12,
+        startFret: config.startFret || 0,
         strings: config.strings || 6,
-        tuning: config.tuning || Tunings.guitar6.E_4ths,
+        tuning: config.tuning || Tunings.guitar6.standard,
         fretWidth: 50,
         fretHeight: 20
     };
 
     var fretsWithDots = function () {
         var allDots = [3, 5, 7, 9, 15, 17, 19, 21];
-        return allDots.filter(function(v) { return v <= instance.frets; });
+        return allDots.filter(function(v) { return v <= (instance.frets - instance.startFret); });
     };
 
     var fretsWithDoubleDots = function () {
@@ -129,7 +139,7 @@ var Fretboard = function(config) {
     };
 
     var fretboardWidth = function() {
-        return instance.frets * instance.fretWidth + 2;
+        return (instance.frets - instance.startFret) * instance.fretWidth + 2;
     };
 
     var XMARGIN = function() { return instance.fretWidth; };
@@ -147,8 +157,9 @@ var Fretboard = function(config) {
     };
 
     var drawFrets = function() {
-        for(var i=0; i<=instance.frets; i++) {
-            let x = i * instance.fretWidth + 1 + XMARGIN();
+        for(var i=instance.startFret; i<=instance.frets; i++) {
+            let x = (i - instance.startFret) * instance.fretWidth + 1 + XMARGIN();
+            // fret
             instance.svgContainer
                 .append("line")
                 .attr("x1", x)
@@ -157,6 +168,7 @@ var Fretboard = function(config) {
                 .attr("y2", YMARGIN() + fretboardHeight())
                 .attr("stroke", "lightgray")
                 .attr("stroke-width", i==0? 8:2);
+            // number
             d3.select("#" + id)
                 .append("p")
                 .attr("class", "fretnum")
@@ -183,16 +195,21 @@ var Fretboard = function(config) {
         var placeTuning = function(d, i) {
             return (instance.strings - i) * instance.fretHeight - 5 + "px";
         };
+
+        var toBaseFretNote = function(note) {
+            return noteName(absNote(note) + instance.startFret);
+        }
+
         d3.select("#" + id)
             .selectAll(".tuning")
             .data(instance.tuning.slice(0, instance.strings))
             .style("top", placeTuning)
-            .text(verbatim)
+            .text(toBaseFretNote)
             .enter()
             .append("p")
             .attr("class", "tuning")
             .style("top", placeTuning)
-            .text(verbatim)
+            .text(toBaseFretNote)
             ;
     };
 
@@ -259,8 +276,8 @@ var Fretboard = function(config) {
         var absPitch = absNote(note);
         color = color || "black";
         var absString = (instance.strings - string);
-        var basePitch = absNote(instance.tuning[absString]);
-        if((absPitch >= basePitch) && (absPitch <= basePitch + instance.frets)) {
+        var basePitch = absNote(instance.tuning[absString]) + instance.startFret;
+        if((absPitch >= basePitch) && (absPitch <= (basePitch + instance.frets - instance.startFret))) {
             instance.svgContainer
                 .append("circle")
                 .attr("class", "note")
@@ -370,9 +387,15 @@ Fretboard.drawAll = function(selector) {
     let fretboards = document.querySelectorAll(selector);
 
     fretboards.forEach(function(e) {
-        let frets = parseInt(e.dataset["frets"]) || 8;
+        let fretdef = e.dataset["frets"];
+        let startFret, frets;
+        if (fretdef && (fretdef.indexOf("-") !== -1)) {
+            [startFret, frets] = fretdef.split("-").map(function(x) {return parseInt(x)});
+        } else {
+            [startFret, frets] = [0, parseInt(fretdef) || 8];
+        }
         let notes = e.dataset["notes"];
-        let fretboard = Fretboard({frets: frets, where: e});
+        let fretboard = Fretboard({frets: frets, startFret: startFret, where: e});
         if (notes) {
             fretboard.draw(notes);
         }
