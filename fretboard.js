@@ -124,14 +124,18 @@ var Fretboard = function(config) {
         fretHeight: 20
     };
 
+    var fretFitsIn = function(fret) {
+        return (fret > instance.startFret) && (fret <= instance.frets);
+    };
+
     var fretsWithDots = function () {
         var allDots = [3, 5, 7, 9, 15, 17, 19, 21];
-        return allDots.filter(function(v) { return v <= (instance.frets - instance.startFret); });
+        return allDots.filter(fretFitsIn);
     };
 
     var fretsWithDoubleDots = function () {
         var allDots = [12, 24];
-        return allDots.filter(function(v) { return v <= instance.frets; });
+        return allDots.filter(fretFitsIn);
     };
 
     var fretboardHeight = function () {
@@ -221,7 +225,7 @@ var Fretboard = function(config) {
             .data(fretsWithDots());
 
         function dotX(d) {
-            return (d - 1) * instance.fretWidth + instance.fretWidth/2 + XMARGIN();
+            return (d - instance.startFret - 1) * instance.fretWidth + instance.fretWidth/2 + XMARGIN();
         }
 
         function dotY(ylocation) { 
@@ -243,7 +247,7 @@ var Fretboard = function(config) {
 
         var p = instance.svgContainer
             .selectAll(".octave")
-            .data(fretsWithDoubleDots);
+            .data(fretsWithDoubleDots());
 
         p.enter()
             .append("circle")
