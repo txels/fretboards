@@ -388,7 +388,7 @@ var Fretboard = function(config) {
 };
 
 
-Fretboard.drawAll = function(selector) {
+Fretboard.drawAll = function(selector, tuning) {
     let fretboards = document.querySelectorAll(selector);
 
     fretboards.forEach(function(e) {
@@ -400,7 +400,7 @@ Fretboard.drawAll = function(selector) {
             [startFret, frets] = [0, parseInt(fretdef) || 8];
         }
         let notes = e.dataset["notes"];
-        let fretboard = Fretboard({frets: frets, startFret: startFret, where: e});
+        let fretboard = Fretboard({frets: frets, startFret: startFret, where: e, tuning: tuning});
         if (notes) {
             fretboard.draw(notes);
         }

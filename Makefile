@@ -1,3 +1,6 @@
+install:
+	pipenv install && pipenv shell
+
 run:
 	python3 -m http.server 8080
 
