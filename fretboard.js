@@ -100,7 +100,8 @@ var Tunings = {
         standard: ["e2", "a2", "d3", "g3", "b3", "e4"],
         E_4ths: ["e2", "a2", "d3", "g3", "c4", "f4"],
         Drop_D: ["d2", "a2", "d3", "g3", "b3", "e4"],
-        G_open: ["d2", "g2", "d3", "g3", "b4", "d4"]
+        G_open: ["d2", "g2", "d3", "g3", "b3", "d4"],
+        DADGAD: ["d2", "a2", "d3", "g3", "a3", "d4"]
     },
     guitar7: {
         standard: ["b2", "e2", "a2", "d3", "g3", "b3", "e4"],
