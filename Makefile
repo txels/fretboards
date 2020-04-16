@@ -1,8 +1,8 @@
-install:
+setup:
 	pipenv install && pipenv shell
 
 run:
-	python3 -m http.server 8080
+	python3 -m http.server 8007
 
 test:
 	npm test
@@ -12,3 +12,6 @@ readme.html: README.md
 
 publish:
 	scp *.{html,js,css} txels.com:fretboard/
+
+
+.PHONY: setup run test publish

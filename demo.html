@@ -1,75 +1,89 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <script src="https://d3js.org/d3.v4.min.js"></script>
-    <link rel="stylesheet" href="fretboard.css"/>
+    <link rel="stylesheet" href="fretboard.css" />
     <script src="fretboard.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
+    <h1>Introduction to 4ths tuning</h1>
+    <p>
+      4ths tuning is based on making all strings tuned one just 4th apart. This
+      has the advantage (over the standard guitar tuning) that every fingering
+      (provided no open strings are involved) is moveable across the fretboard,
+      so your learning of fingerings is minimised.
+    </p>
 
-<h1>Introduction to 4ths tuning</h1>
-<p>
-4ths tuning is based on making all strings tuned one
-just 4th apart. This has the advantage (over the standard guitar
-tuning) that every fingering
-(provided no open strings are involved) is moveable across the
-fretboard, so your learning of fingerings is minimised.
-</p>
+    <h2>Major scales</h2>
+    <p>
+      As an example, this is what a G major scale looks like on a guitar tuned
+      in E 4ths (the root notes, G, are red). Note the symmetry of the patterns
+      repeating all over the fingerboard:
+    </p>
+    <div class="fb-container" data-notes="g major"></div>
+    <p>
+      Notice how e.g. starting from any of the G notes with a given finger, you
+      can play the exact same fingering pattern starting from different frets
+      and different strings. If you have already been playing guitar for a
+      while, you will realise how much simpler this is to memorise than with
+      standard guitar tuning.
+    </p>
+    <p>
+      Look at this basic layout for one octave of G major, if you start from
+      your first finger:
+    </p>
+    <div
+      class="fb-container"
+      data-notes="6:g2 6:a2 6:b2 5:c3 5:d3 5:e3 4:f#3; 4:g3"
+    ></div>
+    <p>
+      Starting from your second finger:
+    </p>
+    <div
+      class="fb-container"
+      data-notes="6:g2 6:a2 5:b2 5:c3 5:d3 4:e3 4:f#3; 4:g3"
+    ></div>
+    <p>
+      Starting from your fourth finger:
+    </p>
+    <div
+      class="fb-container"
+      data-notes="4:g3 3:a3 3:b3 3:c4 2:d4 2:e4 2:f#4; 1:g4"
+    ></div>
+    <p>
+      All of the notes of the G major scale based on a fixed position starting
+      on the 3rd fret, which you can view as chaining the former fingerings:
+    </p>
+    <div
+      class="fb-container"
+      data-notes="6:g2 6:a2 6:b2 5:c3 5:d3 5:e3 4:f#3; 4:g3 4:a3 3:b3 3:c4 3:d4 2:e4 2:f#4; 2:g4 1:a4 1:b4 1:c5"
+    ></div>
+    <p>
+      Similarly, but based on the 2nd fret:
+    </p>
+    <div
+      class="fb-container"
+      data-notes="6:g2 6:f#2 6:a2 5:b2 5:c3 5:d3 4:e3 4:f#3; 4:g3 3:a3 3:b3 3:c4 2:d4 2:e4 2:f#4; 1:g4 1:a4 1:b4"
+    ></div>
+    <p>
+      One of the things you may have started to notice is that all scales that
+      derive from a major scale can be comfortably played using 3 notes per
+      string.
+    </p>
+    <p>
+      As a final example, this is C Major all over the first twelve frets:
+    </p>
+    <div class="fb-container" data-frets="12" data-notes="c major"></div>
 
-<h2>Major scales</h2>
-<p>
-As an example, this is what a G major scale looks like on
-a guitar tuned in E 4ths (the root notes, G, are red). Note
-the symmetry of the patterns repeating all over the fingerboard:
-</p>
-<div class="fb-container" data-notes="g major"></div>
-<p>
-Notice how e.g. starting from any of the G notes with a given
-finger, you can play the exact same fingering pattern starting
-from different frets and different strings. If you have
-already been playing guitar for a while, you will realise how
-much simpler this is to memorise than with standard guitar
-tuning.
-</p>
-<p>
-Look at this basic layout for one octave of G major, if
-you start from your first finger:
-</p>
-<div class="fb-container" data-notes="6:g2 6:a2 6:b2 5:c3 5:d3 5:e3 4:f#3; 4:g3"></div>
-<p>
-Starting from your second finger:
-</p>
-<div class="fb-container" data-notes="6:g2 6:a2 5:b2 5:c3 5:d3 4:e3 4:f#3; 4:g3"></div>
-<p>
-Starting from your fourth finger:
-</p>
-<div class="fb-container" data-notes="4:g3 3:a3 3:b3 3:c4 2:d4 2:e4 2:f#4; 1:g4"></div>
-<p>
-All of the notes of the G major scale based on a fixed position starting
-on the 3rd fret, which you can view as chaining the former fingerings:
-</p>
-<div class="fb-container" data-notes="6:g2 6:a2 6:b2 5:c3 5:d3 5:e3 4:f#3; 4:g3 4:a3 3:b3 3:c4 3:d4 2:e4 2:f#4; 2:g4 1:a4 1:b4 1:c5"></div>
-<p>
-Similarly, but based on the 2nd fret:
-</p>
-<div class="fb-container" data-notes="6:g2 6:f#2 6:a2 5:b2 5:c3 5:d3 4:e3 4:f#3; 4:g3 3:a3 3:b3 3:c4 2:d4 2:e4 2:f#4; 1:g4 1:a4 1:b4"></div>
-<p>
-One of the things you may have started to notice is that all scales
-that derive from a major scale can be comfortably played using
-3 notes per string.
-</p>
-<p>
-As a final example, this is C Major all over the first twelve frets:
-</p>
-<div class="fb-container" data-frets="12" data-notes="c major"></div>
+    <div class="fb-container" data-frets="6-12" data-notes="c major"></div>
 
-<div class="fb-container" data-frets="6-12" data-notes="c major"></div>
-
-<script>
-    Fretboard.drawAll('.fb-container', Tunings.guitar6.E_4ths);
-</script>
-</body>
-
+    <script>
+      Fretboard.drawAll(".fb-container", {
+        tuning: Tunings.guitar6.E_4ths,
+        leftHanded: true,
+      });
+    </script>
+  </body>
 </html>
