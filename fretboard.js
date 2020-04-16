@@ -1,5 +1,5 @@
 // Music
-var allNotes = [
+let allNotes = [
   "c",
   "c#",
   "d",
@@ -13,7 +13,7 @@ var allNotes = [
   "a#",
   "b",
 ];
-var allNotesEnh = [
+let allNotesEnh = [
   "c",
   "db",
   "d",
@@ -27,7 +27,7 @@ var allNotesEnh = [
   "bb",
   "cb",
 ];
-var colors = [
+let colors = [
   "red",
   "green",
   "blue",
@@ -38,7 +38,7 @@ var colors = [
   "lightgray",
 ];
 
-var Scales = {
+let Scales = {
   // scales
   lydian: "c d e f# g a b",
   major: "c d e f g a b",
@@ -85,7 +85,7 @@ function whatIs(sequence) {
 
 function asOffset(note) {
   note = note.toLowerCase();
-  var offset = allNotes.indexOf(note);
+  let offset = allNotes.indexOf(note);
   if (offset === -1) {
     offset = allNotesEnh.indexOf(note);
   }
@@ -93,8 +93,8 @@ function asOffset(note) {
 }
 
 function absNote(note) {
-  var octave = note[note.length - 1];
-  var pitch = asOffset(note.slice(0, -1));
+  let octave = note[note.length - 1];
+  let pitch = asOffset(note.slice(0, -1));
   if (pitch > -1) {
     return pitch + octave * 12;
   }
@@ -108,15 +108,15 @@ function noteName(absPitch) {
 
 function asNotes(scale) {
   let [root, type] = scale.split(" ");
-  var scaleInC = Scales._(type);
-  var offset = asOffset(root);
-  var scaleTransposed = scaleInC.map(function (note) {
+  let scaleInC = Scales._(type);
+  let offset = asOffset(root);
+  let scaleTransposed = scaleInC.map(function (note) {
     return allNotes[(asOffset(note) + offset) % 12];
   });
   return scaleTransposed.join(" ");
 }
 
-var verbatim = function (d) {
+let verbatim = function (d) {
   return d;
 };
 
@@ -140,11 +140,11 @@ var Tunings = {
 
 var Fretboard = function (config) {
   config = config || {};
-  var where = config.where || "body";
+  let where = config.where || "body";
 
-  var id = "fretboard-" + Math.floor(Math.random() * 1000000);
+  let id = "fretboard-" + Math.floor(Math.random() * 1000000);
 
-  var instance = {
+  let instance = {
     frets: config.frets || 12,
     startFret: config.startFret || 0,
     strings: config.strings || 6,
@@ -154,36 +154,36 @@ var Fretboard = function (config) {
     leftHanded: config.leftHanded || false,
   };
 
-  var fretFitsIn = function (fret) {
+  let fretFitsIn = function (fret) {
     return fret > instance.startFret && fret <= instance.frets;
   };
 
-  var fretsWithDots = function () {
-    var allDots = [3, 5, 7, 9, 15, 17, 19, 21];
+  let fretsWithDots = function () {
+    let allDots = [3, 5, 7, 9, 15, 17, 19, 21];
     return allDots.filter(fretFitsIn);
   };
 
-  var fretsWithDoubleDots = function () {
-    var allDots = [12, 24];
+  let fretsWithDoubleDots = function () {
+    let allDots = [12, 24];
     return allDots.filter(fretFitsIn);
   };
 
-  var fretboardHeight = function () {
+  let fretboardHeight = function () {
     return (instance.strings - 1) * instance.fretHeight + 2;
   };
 
-  var fretboardWidth = function () {
+  let fretboardWidth = function () {
     return (instance.frets - instance.startFret) * instance.fretWidth + 2;
   };
 
-  var XMARGIN = function () {
+  let XMARGIN = function () {
     return instance.fretWidth;
   };
-  var YMARGIN = function () {
+  let YMARGIN = function () {
     return instance.fretHeight;
   };
 
-  var makeContainer = function (elem) {
+  let makeContainer = function (elem) {
     instance.width = fretboardWidth() + XMARGIN() * 2;
     instance.height = fretboardHeight() + YMARGIN() * 2;
 
@@ -205,8 +205,11 @@ var Fretboard = function (config) {
     return container;
   };
 
-  var drawFrets = function () {
-    for (var i = instance.startFret; i <= instance.frets; i++) {
+  let drawFrets = function () {
+    for (let i = instance.startFret; i <= instance.frets; i++) {
+      // BEWARE: the coordinate system for SVG elements uses a transformation
+      // for lefties, however the HTML elements we use for fret numbers and
+      // tuning we transform by hand.
       let x = (i - instance.startFret) * instance.fretWidth + 1 + XMARGIN();
       let fretNumX = x;
       if (instance.leftHanded) {
@@ -231,8 +234,8 @@ var Fretboard = function (config) {
     }
   };
 
-  var drawStrings = function () {
-    for (var i = 0; i < instance.strings; i++) {
+  let drawStrings = function () {
+    for (let i = 0; i < instance.strings; i++) {
       instance.svgContainer
         .append("line")
         .attr("x1", XMARGIN())
@@ -242,11 +245,11 @@ var Fretboard = function (config) {
         .attr("stroke", "black")
         .attr("stroke-width", 1);
     }
-    var placeTuning = function (d, i) {
+    let placeTuning = function (d, i) {
       return (instance.strings - i) * instance.fretHeight - 5 + "px";
     };
 
-    var toBaseFretNote = function (note) {
+    let toBaseFretNote = function (note) {
       return noteName(absNote(note) + instance.startFret);
     };
 
@@ -265,8 +268,8 @@ var Fretboard = function (config) {
       .text(toBaseFretNote);
   };
 
-  var drawDots = function () {
-    var p = instance.svgContainer.selectAll("circle").data(fretsWithDots());
+  let drawDots = function () {
+    let p = instance.svgContainer.selectAll("circle").data(fretsWithDots());
 
     function dotX(d) {
       return (
@@ -296,9 +299,7 @@ var Fretboard = function (config) {
       .attr("r", 4)
       .style("fill", "#ddd");
 
-    var p = instance.svgContainer
-      .selectAll(".octave")
-      .data(fretsWithDoubleDots());
+    p = instance.svgContainer.selectAll(".octave").data(fretsWithDoubleDots());
 
     p.enter()
       .append("circle")
@@ -328,10 +329,10 @@ var Fretboard = function (config) {
   // Notes on fretboard
 
   instance.addNoteOnString = function (note, string, color) {
-    var absPitch = absNote(note);
+    let absPitch = absNote(note);
     color = color || "black";
-    var absString = instance.strings - string;
-    var basePitch = absNote(instance.tuning[absString]) + instance.startFret;
+    let absString = instance.strings - string;
+    let basePitch = absNote(instance.tuning[absString]) + instance.startFret;
     if (
       absPitch >= basePitch &&
       absPitch <= basePitch + instance.frets - instance.startFret
@@ -361,7 +362,7 @@ var Fretboard = function (config) {
   };
 
   instance.addNote = function (note, color) {
-    for (var string = 1; string <= instance.strings; string++) {
+    for (let string = 1; string <= instance.strings; string++) {
       instance.addNoteOnString(note, string, color);
     }
 
@@ -369,11 +370,11 @@ var Fretboard = function (config) {
   };
 
   instance.addNotes = function (notes, color) {
-    var allNotes = notes.split(" ");
-    for (var i = 0; i < allNotes.length; i++) {
-      var showColor = color || colors[i];
-      var note = allNotes[i];
-      for (var octave = 1; octave < 7; octave++) {
+    let allNotes = notes.split(" ");
+    for (let i = 0; i < allNotes.length; i++) {
+      let showColor = color || colors[i];
+      let note = allNotes[i];
+      for (let octave = 1; octave < 7; octave++) {
         instance.addNote(note + octave, showColor);
       }
     }
