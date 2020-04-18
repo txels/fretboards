@@ -59,6 +59,7 @@ config = {
   fretWidth: 50, // Display width of frets in pixels
   fretHeight: 20, // Display heigh of frets in pixels
   leftHanded: false, // Show mirror image for left handed players
+  showTitle: false, // Set the note name as the title, so it will display on hover
 };
 ```
 

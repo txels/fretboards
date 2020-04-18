@@ -145,13 +145,15 @@ var Fretboard = function (config) {
   let id = "fretboard-" + Math.floor(Math.random() * 1000000);
 
   let instance = {
-    frets: config.frets || 12,
-    startFret: config.startFret || 0,
-    strings: config.strings || 6,
-    tuning: config.tuning || Tunings.guitar6.standard,
-    fretWidth: config.fretWidth || 50,
-    fretHeight: config.fretHeight || 20,
-    leftHanded: config.leftHanded || false,
+    frets: 12,
+    startFret: 0,
+    strings: 6,
+    tuning: Tunings.guitar6.standard,
+    fretWidth: 50,
+    fretHeight: 20,
+    leftHanded: false,
+    showTitle: false,
+    ...config,
   };
 
   let fretFitsIn = function (fret) {
@@ -337,7 +339,7 @@ var Fretboard = function (config) {
       absPitch >= basePitch &&
       absPitch <= basePitch + instance.frets - instance.startFret
     ) {
-      instance.svgContainer
+      const circle = instance.svgContainer
         .append("circle")
         .attr("class", "note")
         .attr("stroke-width", 1)
@@ -354,9 +356,11 @@ var Fretboard = function (config) {
             5 - parseInt(this.getAttribute("stroke-width"))
           );
           this.style.fill = fill == "white" ? "lightgray" : "white";
-        })
-        .append("title")
-        .text(note.toUpperCase());
+        });
+
+      if (instance.showTitle) {
+        circle.append("title").text(note.toUpperCase());
+      }
     }
     return instance;
   };
