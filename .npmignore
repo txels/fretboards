@@ -1,0 +1,7 @@
+lib/*
+test/*
+Makefile
+karma.conf.js
+*.html
+*.md
+.python-version

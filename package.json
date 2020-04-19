@@ -1,6 +1,6 @@
 {
   "name": "fretboards",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Display fretboards and notes on your browser",
   "keywords": [
     "d3",
@@ -14,7 +14,7 @@
     "url": "git+https://github.com/txels/fretboard.git"
   },
   "dependencies": {
-    "d3": "^5.15.1"
+    "d3-selection": "^1.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
