@@ -2,6 +2,36 @@
 
 Instantiate a fretboard, and display some notes, scales, chord voicings, etc.
 
+This is an example of how it looks like:
+
+![](GMajor.png)
+
+## Installation
+
+As a script tag, from CDN:
+
+```html
+<script src="https://unpkg.com/fretboards@0.2.4/dist/fretboard.js"></script>
+```
+
+In a modern Javascript environment, with ES2015 or higher, install with:
+
+    npm install fretboards
+
+And then import the whole package:
+
+```js
+import * as fretboards from "fretboards";
+```
+
+...or just the bits you need:
+
+```js
+import { Fretboard, Tunings } from "fretboards";
+```
+
+## Usage examples
+
 Examples using javascript:
 
 ```js

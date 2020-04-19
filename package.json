@@ -1,6 +1,6 @@
 {
   "name": "fretboards",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Display fretboards and notes on your browser",
   "keywords": [
     "d3",
@@ -34,6 +34,11 @@
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
   },
+  "files": [
+    "assets/**",
+    "dist/**/*.js",
+    "src/**/*.js"
+  ],
   "scripts": {
     "test": "karma start",
     "package": "webpack"

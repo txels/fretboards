@@ -6,7 +6,7 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "fretboard.js",
     library: "fretboard",
-    // libraryTarget: "umd",
+    libraryTarget: "umd",
   },
   module: {
     rules: [
