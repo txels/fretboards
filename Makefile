@@ -4,8 +4,15 @@ run:
 test:
 	npm test
 
-publish:
+package:
+	npm run package
+
+publish: package
+	npm publish
+
+publish-demos:
 	scp *.{html,js,css} txels.com:fretboard/
+
 
 
 .PHONY: setup run test publish
