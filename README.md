@@ -11,7 +11,7 @@ This is an example of how it looks like:
 As a script tag, from CDN:
 
 ```html
-<script src="https://unpkg.com/fretboards@0.2.4/dist/fretboard.js"></script>
+<script src="https://unpkg.com/fretboards/dist/fretboard.js"></script>
 ```
 
 In a modern Javascript environment, with ES2015 or higher, install with:
