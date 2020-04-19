@@ -2,9 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <link rel="stylesheet" href="fretboard.css" />
-    <script src="fretboard.js"></script>
+    <script src="dist/fretboard.js"></script>
   </head>
 
   <body>
@@ -80,8 +78,8 @@
     <div class="fb-container" data-frets="6-12" data-notes="c major"></div>
 
     <script>
-      Fretboard.drawAll(".fb-container", {
-        tuning: Tunings.guitar6.E_4ths,
+      fretboard.Fretboard.drawAll(".fb-container", {
+        tuning: fretboard.Tunings.guitar6.E_4ths,
         leftHanded: false,
         showTitle: true,
       });

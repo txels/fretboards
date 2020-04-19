@@ -1,5 +1,8 @@
+import * as d3 from "d3-selection";
+import "../assets/fretboard.css";
+
 // Music
-let allNotes = [
+const allNotes = [
   "c",
   "c#",
   "d",
@@ -13,7 +16,7 @@ let allNotes = [
   "a#",
   "b",
 ];
-let allNotesEnh = [
+const allNotesEnh = [
   "c",
   "db",
   "d",
@@ -27,7 +30,7 @@ let allNotesEnh = [
   "bb",
   "cb",
 ];
-let colors = [
+const colors = [
   "red",
   "green",
   "blue",
@@ -38,7 +41,7 @@ let colors = [
   "lightgray",
 ];
 
-let Scales = {
+export const Scales = {
   // scales
   lydian: "c d e f# g a b",
   major: "c d e f g a b",
@@ -73,7 +76,7 @@ let Scales = {
 
 function whatIs(sequence) {
   let sections = sequence.split(" ");
-  if (sections.length === 2 && typeof Scales[sections[1]] == "string") {
+  if (sections.length === 2 && typeof Scales[sections[1]] === "string") {
     return "scale";
   }
   if (sections[0].indexOf(":") > 0) {
@@ -116,12 +119,8 @@ function asNotes(scale) {
   return scaleTransposed.join(" ");
 }
 
-let verbatim = function (d) {
-  return d;
-};
-
 // Fretboard
-var Tunings = {
+export const Tunings = {
   bass4: {
     standard: ["e1", "a1", "d2", "g2", "b2", "e3"],
   },
@@ -138,7 +137,7 @@ var Tunings = {
   },
 };
 
-var Fretboard = function (config) {
+export const Fretboard = function (config) {
   config = config || {};
   let where = config.where || "body";
 
@@ -225,7 +224,7 @@ var Fretboard = function (config) {
         .attr("x2", x)
         .attr("y2", YMARGIN() + fretboardHeight())
         .attr("stroke", "lightgray")
-        .attr("stroke-width", i == 0 ? 8 : 2);
+        .attr("stroke-width", i === 0 ? 8 : 2);
       // number
       d3.select("#" + id)
         .append("p")
@@ -284,7 +283,7 @@ var Fretboard = function (config) {
     function dotY(ylocation) {
       let margin = YMARGIN();
 
-      if (instance.strings % 2 == 0) {
+      if (instance.strings % 2 === 0) {
         return (
           ((instance.strings + 3) / 2 - ylocation) * instance.fretHeight +
           margin
@@ -355,7 +354,7 @@ var Fretboard = function (config) {
             "stroke-width",
             5 - parseInt(this.getAttribute("stroke-width"))
           );
-          this.style.fill = fill == "white" ? "lightgray" : "white";
+          this.style.fill = fill === "white" ? "lightgray" : "white";
         });
 
       if (instance.showTitle) {
@@ -398,9 +397,8 @@ var Fretboard = function (config) {
     // e.g. "6:g2 5:b2 4:d3 3:g3 2:d4 1:g4"
     let pairs = sequence.split(" ");
     pairs.forEach(function (pair, i) {
-      let [string, note] = pair.split(":");
-      string = parseInt(string);
-      instance.addNoteOnString(note, string); // , i==0? "red" : "black");
+      const [string, note] = pair.split(":");
+      instance.addNoteOnString(note, parseInt(string)); // , i==0? "red" : "black");
     });
 
     return instance;
@@ -462,7 +460,7 @@ Fretboard.drawAll = function (selector, config) {
   });
 };
 
-function Guitar(strings, frets) {
+export function Guitar(strings, frets) {
   strings = strings || 6;
   frets = frets || 12;
   return Fretboard({
@@ -472,7 +470,7 @@ function Guitar(strings, frets) {
   });
 }
 
-function Bass(strings, frets) {
+export function Bass(strings, frets) {
   strings = strings || 4;
   frets = frets || 12;
   return Fretboard({

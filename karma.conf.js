@@ -1,54 +1,46 @@
 // Karma configuration
 // Generated on Fri Dec 05 2014 16:49:29 GMT-0500 (EST)
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
-
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
-
+    basePath: "",
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: ["jasmine"],
 
     // list of files / patterns to load in the browser
-    files: [
-        "lib/d3.min.js",
-        "fretboard.js",
-        "test/*.spec.js"
-    ],
-
+    files: ["lib/d3.min.js", "src/index.js", "test/*.spec.js"],
 
     // list of files to exclude
-    exclude: [
-    ],
-
+    exclude: [],
 
     //// preprocess matching files before serving them to the browser
     //// available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    //preprocessors: {
+    preprocessors: {
       //'test/**/*.js': ['babel'],
-      //'src/**/*.js': ['babel']
-    //},
+      "src/**/*.js": ["babel"],
+    },
 
-    //babelPreprocessor: {
-      //options: {
-        //sourceMap: 'inline',
-        //presets: [ 'es2015-loose', 'stage-1'],
-        //plugins: [
-          //'syntax-flow',
-          //'transform-decorators-legacy',
-          //'transform-flow-strip-types'
-        //]
-      //}
-    //},
+    babelPreprocessor: {
+      options: {
+        presets: ["@babel/preset-env"],
+        sourceMap: "inline",
+      },
+      filename: function (file) {
+        return file.originalPath.replace(/\.js$/, ".es5.js");
+      },
+      sourceFileName: function (file) {
+        return file.originalPath;
+      },
+    },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     // reporters: ['dots'],
-    reporters: ['progress'],
+    reporters: ["progress"],
 
     // web server port
     port: 9876,
@@ -68,11 +60,10 @@ module.exports = function(config) {
     // browsers: ['PhantomJS'],
     // browsers: ['Chrome', 'Firefox'],
     // browsers: ['Firefox'],
-    browsers: ['Chrome'],
-
+    browsers: ["Chrome"],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: true
+    singleRun: true,
   });
 };

@@ -1,6 +1,6 @@
 {
-  "name": "d3-fretboard",
-  "version": "0.1.0",
+  "name": "fretboards",
+  "version": "0.2.0",
   "description": "Display fretboards and notes on your browser",
   "keywords": [
     "d3",
@@ -8,29 +8,44 @@
     "fretboard"
   ],
   "homepage": "https://txels.github.io/fretboard/index.html",
-  "author": {
-    "name": "Carles Barrobés",
-    "url": "http://txels.barrobes.com/"
-  },
+  "author": "Carles Barrobés (http://txels.barrobes.com/)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/txels/fretboard.git"
+    "url": "git+https://github.com/txels/fretboard.git"
   },
   "dependencies": {
-    "d3": "3.0.x"
+    "d3": "^5.15.1"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "jasmine-core": "^2.4.1",
-    "karma": "^0.13.22",
-    "karma-chrome-launcher": "^1.0.1",
-    "karma-jasmine": "^1.0.2",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.1.0",
+    "babel-preset-es2015": "^6.24.1",
+    "css-loader": "^3.5.2",
+    "gulp": "^4.0.2",
+    "jasmine-core": "^3.5.0",
+    "karma": "^5.0.2",
+    "karma-babel-preprocessor": "^8.0.1",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-jasmine": "^3.1.1",
     "karma-phantomjs-launcher": "^1.0.4",
-    "phantomjs": "^2.1.7",
-    "phantomjs-prebuilt": "^2.1.7"
+    "style-loader": "^1.1.4",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
   },
   "scripts": {
-    "test": "karma start"
+    "test": "karma start",
+    "package": "webpack"
   },
-  "readmeFilename": "README.md"
+  "bugs": {
+    "url": "https://github.com/txels/fretboard/issues"
+  },
+  "main": "dist/fretboard.js",
+  "module": "src/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "license": "0BSD"
 }

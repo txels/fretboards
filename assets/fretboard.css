@@ -1,22 +1,17 @@
-body,
-p {
-  font-family: Georgia, Times New Roman;
-}
-
 .fretboard {
   position: relative;
 }
-.tuning,
-.fretnum {
+.fretboard .tuning,
+.fretboard .fretnum {
   position: absolute;
   margin: 0;
   padding: 0;
   font-family: Helvetica;
   text-transform: uppercase;
 }
-.tuning {
+.fretboard .tuning {
   font-size: 10px;
 }
-.fretnum {
+.fretboard .fretnum {
   font-size: 8px;
 }
