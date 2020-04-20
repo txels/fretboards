@@ -11,7 +11,7 @@ module.exports = function (config) {
     frameworks: ["jasmine"],
 
     // list of files / patterns to load in the browser
-    files: ["lib/d3.min.js", "src/index.js", "test/*.spec.js"],
+    files: ["lib/d3.min.js", "dist/*.js", "test/*.spec.js"],
 
     // list of files to exclude
     exclude: [],

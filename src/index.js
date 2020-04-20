@@ -74,7 +74,7 @@ export const Scales = {
   },
 };
 
-function whatIs(sequence) {
+export function whatIs(sequence) {
   let sections = sequence.split(" ");
   if (sections.length === 2 && typeof Scales[sections[1]] === "string") {
     return "scale";
@@ -86,7 +86,7 @@ function whatIs(sequence) {
   }
 }
 
-function asOffset(note) {
+export function asOffset(note) {
   note = note.toLowerCase();
   let offset = allNotes.indexOf(note);
   if (offset === -1) {
@@ -95,7 +95,7 @@ function asOffset(note) {
   return offset;
 }
 
-function absNote(note) {
+export function absNote(note) {
   let octave = note[note.length - 1];
   let pitch = asOffset(note.slice(0, -1));
   if (pitch > -1) {
@@ -103,13 +103,13 @@ function absNote(note) {
   }
 }
 
-function noteName(absPitch) {
+export function noteName(absPitch) {
   let octave = Math.floor(absPitch / 12);
   let note = allNotes[absPitch % 12];
   return note + octave.toString();
 }
 
-function asNotes(scale) {
+export function asNotes(scale) {
   let [root, type] = scale.split(" ");
   let scaleInC = Scales._(type);
   let offset = asOffset(root);
