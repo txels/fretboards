@@ -1,3 +1,5 @@
+import * as fretboard from "@/index";
+
 describe("Music scales", () => {
   let sut;
 
