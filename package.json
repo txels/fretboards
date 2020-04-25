@@ -7,11 +7,11 @@
     "guitar",
     "fretboard"
   ],
-  "homepage": "https://txels.github.io/fretboard/index.html",
+  "homepage": "https://github.com/txels/fretboards",
   "author": "Carles Barrobés (http://txels.barrobes.com/)",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/txels/fretboard.git"
+    "url": "git@github.com:txels/fretboards.git"
   },
   "dependencies": {
     "d3-selection": "^1.4.1"
@@ -37,7 +37,7 @@
     "package": "webpack"
   },
   "bugs": {
-    "url": "https://github.com/txels/fretboard/issues"
+    "url": "https://github.com/txels/fretboards/issues"
   },
   "main": "dist/fretboard.js",
   "module": "src/index.js",

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <link rel="stylesheet" href="fretboard.css"/>
+    <script src="fretboard.js"></script>
+</head>
+
+<body>
+
+<h1>Drui</h1>
+<div class="fb-container" data-frets=12 data-notes="5:a2 4:c4 3:e4 2:g4"></div>
+<div class="fb-container" data-frets=12 data-notes="5:a2 4:a3 3:d4 2:f#4"></div>
+<div class="fb-container" data-frets=12 data-notes="5:a2 4:g3 3:c4 2:e4"></div>
+<div class="fb-container" data-frets=12 data-notes="5:a2 4:f3 3:c4 2:e4"></div>
+<h2>Solos</h2>
+<div class="fb-container" data-frets=12 data-notes="a aeolian"></div>
+
+<script>
+    Fretboard.drawAll('.fb-container');
+</script>
+</body>
+
+</html>

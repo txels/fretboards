@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <!--script src="https://d3js.org/d3.v4.min.js"></script-->
+    <script src="lib/d3.min.js"></script>
+    <link rel="stylesheet" href="fretboard.css"/>
+    <script src="fretboard.js"></script>
+</head>
+
+<body>
+
+<h1>Drop2 Chords</h1>
+
+GMaj7
+<div class="fb-container" data-frets="14" data-notes="4:f#3 3:b3 2:d4 1:g4"></div>
+G7
+<div class="fb-container" data-frets="14" data-notes="4:f3 3:b3 2:d4 1:g4"></div>
+G-7
+<div class="fb-container" data-frets="14" data-notes="4:f3 3:bb3 2:d4 1:g4"></div>
+G-7b5
+<div class="fb-container" data-frets="14" data-notes="4:f3 3:bb3 2:db4 1:g4"></div>
+
+
+GMaj7
+<div class="fb-container" data-frets="14" data-notes="4:g3 3:d4 2:f#4 1:b4"></div>
+G7
+<div class="fb-container" data-frets="14" data-notes="4:g3 3:d4 2:f4 1:b4"></div>
+G-7
+<div class="fb-container" data-frets="14" data-notes="4:g3 3:d4 2:f#4 1:bb4"></div>
+G-7b5
+<div class="fb-container" data-frets="14" data-notes="4:g3 3:db4 2:f#4 1:bb4"></div>
+
+
+GMaj7
+<div class="fb-container" data-frets="14" data-notes="4:b3 3:f#4 2:g4 1:d5"></div>
+G7
+<div class="fb-container" data-frets="14" data-notes="4:b3 3:f4 2:g4 1:d5"></div>
+G-7
+<div class="fb-container" data-frets="14" data-notes="4:bb3 3:f4 2:g4 1:d5"></div>
+G-7b5
+<div class="fb-container" data-frets="14" data-notes="4:bb3 3:f4 2:g4 1:db5"></div>
+
+
+GMaj7
+<div class="fb-container" data-frets="14" data-notes="4:d4 3:g4 2:b4 1:f#5"></div>
+G7
+<div class="fb-container" data-frets="14" data-notes="4:d4 3:g4 2:b4 1:f5"></div>
+G-7
+<div class="fb-container" data-frets="14" data-notes="4:d4 3:g4 2:bb4 1:f5"></div>
+G-7b5
+<div class="fb-container" data-frets="14" data-notes="4:db4 3:g4 2:bb4 1:f5"></div>
+
+
+<h1>Drop3 Chords</h1>
+
+GMaj7
+<div class="fb-container" data-frets="14" data-notes="6:g2 4:f#3 3:b3 2:d4"></div>
+<div class="fb-container" data-frets="14" data-notes="6:b2 4:g3 3:d4 2:f#4"></div>
+<div class="fb-container" data-frets="14" data-notes="6:d3 4:b3 3:f#4 2:g4"></div>
+<div class="fb-container" data-frets="14" data-notes="6:f#3 4:d4 3:g4 2:b4"></div>
+G7
+<div class="fb-container" data-frets="14" data-notes="6:g2 4:f3 3:b3 2:d4"></div>
+<div class="fb-container" data-frets="14" data-notes="6:b2 4:g3 3:d4 2:f4"></div>
+<div class="fb-container" data-frets="14" data-notes="6:d3 4:b3 3:f4 2:g4"></div>
+<div class="fb-container" data-frets="14" data-notes="6:f3 4:d4 3:g4 2:b4"></div>
+G-7
+<div class="fb-container" data-frets="14" data-notes="6:g2 4:f3 3:bb3 2:d4"></div>
+<div class="fb-container" data-frets="14" data-notes="6:bb2 4:g3 3:d4 2:f4"></div>
+<div class="fb-container" data-frets="14" data-notes="6:d3 4:bb3 3:f4 2:g4"></div>
+<div class="fb-container" data-frets="14" data-notes="6:f3 4:d4 3:g4 2:bb4"></div>
+G-7b5
+<div class="fb-container" data-frets="14" data-notes="6:g2 4:f3 3:bb3 2:db4"></div>
+<div class="fb-container" data-frets="14" data-notes="6:bb2 4:g3 3:db4 2:f4"></div>
+<div class="fb-container" data-frets="14" data-notes="6:db3 4:bb3 3:f4 2:g4"></div>
+<div class="fb-container" data-frets="14" data-notes="6:f3 4:db4 3:g4 2:bb4"></div>
+
+
+<h1>Shell Chords</h1>
+
+<h2>Strings 6-4-3</h2>
+
+GMaj7
+<div class="fb-container" data-frets="5" data-notes="6:g2 4:f#3 3:b3"></div>
+G7
+<div class="fb-container" data-frets="5" data-notes="6:g2 4:f3 3:b3"></div>
+G-7
+<div class="fb-container" data-frets="5" data-notes="6:g2 4:f3 3:bb3"></div>
+
+<h2>Strings 6-5-4</h2>
+
+GMaj7
+<div class="fb-container" data-frets="5" data-notes="6:g2 5:b2 4:f#3"></div>
+G7
+<div class="fb-container" data-frets="5" data-notes="6:g2 5:b2 4:f3"></div>
+G-7
+<div class="fb-container" data-frets="5" data-notes="6:g2 5:bb2 4:f3"></div>
+
+<script>
+    Fretboard.drawAll(
+        '.fb-container', 
+        {
+            tuning: Tunings.guitar6.E_4ths,
+            fretWidth: 40
+        }
+    );
+</script>
+</body>
+
+</html>
