@@ -152,8 +152,70 @@ export const Fretboard = function (config) {
     fretHeight: 20,
     leftHanded: false,
     showTitle: false,
+    notes: [],
     ...config,
   };
+
+  // METHODS for managing notes ---------------------------------
+
+  instance.addNoteOnString = function (note, string, color) {
+    instance.notes.push({ note, string, color });
+    return instance;
+  };
+
+  instance.addNote = function (note, color) {
+    for (let string = 1; string <= instance.strings; string++) {
+      instance.addNoteOnString(note, string, color);
+    }
+    return instance;
+  };
+
+  instance.addNotes = function (notes, color) {
+    let allNotes = notes.split(" ");
+    for (let i = 0; i < allNotes.length; i++) {
+      let showColor = color || colors[i];
+      let note = allNotes[i];
+      for (let octave = 1; octave < 7; octave++) {
+        instance.addNote(note + octave, showColor);
+      }
+    }
+    return instance;
+  };
+
+  instance.scale = function (scaleName) {
+    instance.clear();
+    instance.addNotes(asNotes(scaleName));
+    return instance;
+  };
+
+  instance.placeNotes = function (sequence) {
+    // Sequence of string:note
+    // e.g. "6:g2 5:b2 4:d3 3:g3 2:d4 1:g4"
+    let pairs = sequence.split(" ");
+    pairs.forEach(function (pair, i) {
+      const [string, note] = pair.split(":");
+      instance.addNoteOnString(note, parseInt(string)); // , i==0? "red" : "black");
+    });
+    return instance;
+  };
+
+  instance.add = function (something) {
+    let sections = something.trim().replace(/\s\s+/g, " ").split(";");
+    sections.forEach(function (section) {
+      section = section.trim();
+      let what = whatIs(section);
+      instance[what](section);
+    });
+    return instance;
+  };
+
+  instance.clearNotes = function () {
+    instance.notes = [];
+    instance.svgContainer.selectAll(".note").remove();
+    return instance;
+  };
+
+  // METHODS for drawing -------------------------------------------
 
   let fretFitsIn = function (fret) {
     return fret > instance.startFret && fret <= instance.frets;
@@ -327,11 +389,9 @@ export const Fretboard = function (config) {
     return instance;
   };
 
-  // Notes on fretboard
-
-  instance.addNoteOnString = function (note, string, color) {
+  function paintNote(note, string, color) {
     let absPitch = absNote(note);
-    color = color || "black";
+    let actualColor = color || "black";
     let absString = instance.strings - string;
     let basePitch = absNote(instance.tuning[absString]) + instance.startFret;
     if (
@@ -346,9 +406,9 @@ export const Fretboard = function (config) {
         .attr("cx", (absPitch - basePitch + 0.75) * instance.fretWidth)
         .attr("cy", (string - 1) * instance.fretHeight + 1 + YMARGIN())
         .attr("r", 6)
-        .style("stroke", color)
+        .style("stroke", actualColor)
         .style("fill", "white")
-        .on("click", function (d) {
+        .on("click", function () {
           let fill = this.style.fill;
           this.setAttribute(
             "stroke-width",
@@ -361,65 +421,16 @@ export const Fretboard = function (config) {
         circle.append("title").text(note.toUpperCase());
       }
     }
-    return instance;
-  };
+  }
 
-  instance.addNote = function (note, color) {
-    for (let string = 1; string <= instance.strings; string++) {
-      instance.addNoteOnString(note, string, color);
+  instance.paint = function () {
+    for (let { note, string, color } of instance.notes) {
+      paintNote(note, string, color);
     }
-
-    return instance;
-  };
-
-  instance.addNotes = function (notes, color) {
-    let allNotes = notes.split(" ");
-    for (let i = 0; i < allNotes.length; i++) {
-      let showColor = color || colors[i];
-      let note = allNotes[i];
-      for (let octave = 1; octave < 7; octave++) {
-        instance.addNote(note + octave, showColor);
-      }
-    }
-
-    return instance;
-  };
-
-  instance.scale = function (scaleName) {
-    instance.clear();
-    instance.addNotes(asNotes(scaleName));
-
-    return instance;
-  };
-
-  instance.placeNotes = function (sequence) {
-    // Sequence of string:note
-    // e.g. "6:g2 5:b2 4:d3 3:g3 2:d4 1:g4"
-    let pairs = sequence.split(" ");
-    pairs.forEach(function (pair, i) {
-      const [string, note] = pair.split(":");
-      instance.addNoteOnString(note, parseInt(string)); // , i==0? "red" : "black");
-    });
-
-    return instance;
-  };
-
-  instance.draw = function (something) {
-    let sections = something.trim().replace(/\s\s+/g, " ").split(";");
-    sections.forEach(function (section) {
-      section = section.trim();
-      let what = whatIs(section);
-      instance[what](section);
-    });
-  };
-
-  instance.clearNotes = function () {
-    instance.svgContainer.selectAll(".note").remove();
-
-    return instance;
   };
 
   instance.clear = function () {
+    instance.clearNotes();
     d3.select("#" + id)
       .selectAll(".fretnum,.tuning")
       .remove();
@@ -432,6 +443,10 @@ export const Fretboard = function (config) {
 
   instance.delete = function () {
     d3.select("#" + id).remove();
+  };
+
+  instance.getNotes = function () {
+    return instance.notes;
   };
 
   return instance.drawBoard();
@@ -455,9 +470,12 @@ Fretboard.drawAll = function (selector, config) {
 
     let fretboard = Fretboard(config);
     if (notes) {
-      fretboard.draw(notes);
+      fretboard.add(notes);
     }
+    fretboard.paint();
   });
+
+  return fretboards;
 };
 
 export function Guitar(strings, frets) {

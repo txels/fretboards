@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="../dist/fretboard.js"></script>
+    <style lang="css">
+      h1 {
+        padding: 0;
+        margin-bottom: 0;
+        padding-left: 60px;
+        font-size: 24px;
+        font-family: "Open Sans", Helvetica;
+        font-weight: 200;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1></h1>
+    <div id="fb"></div>
+
+    <script>
+      const h1 = document.querySelector("h1");
+      const fb = fretboard.Fretboard({ where: "#fb" });
+
+      const F = {
+        name: "F",
+        notes: ["6:f2", "5:c3", "4:f3", "3:a3", "2:c4", "1:f4"],
+      };
+      const G = {
+        name: "G",
+        notes: ["6:g2", "5:b2", "4:d3", "3:g3", "2:d4", "1:g4"],
+      };
+      const C = {
+        name: "C",
+        notes: ["6:e2", "5:c3", "4:e3", "3:g3", "2:c4", "1:e4"],
+      };
+
+      const sleep = async (interval) =>
+        await new Promise((r) => setTimeout(r, interval));
+
+      async function reveal(notes, interval = 0) {
+        for (let note of notes) {
+          fb.add(note);
+          fb.paint();
+          await sleep(interval);
+        }
+      }
+
+      async function play() {
+        for (let { name, notes } of [F, G, C]) {
+          fb.clear();
+          h1.innerText = name;
+          await reveal(notes);
+          await sleep(2000);
+        }
+      }
+
+      play();
+    </script>
+  </body>
+</html>

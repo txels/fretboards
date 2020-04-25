@@ -14,5 +14,4 @@ publish-demos:
 	scp *.{html,js,css} txels.com:fretboard/
 
 
-
 .PHONY: setup run test publish
