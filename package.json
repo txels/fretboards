@@ -1,6 +1,6 @@
 {
   "name": "fretboards",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "Display fretboards and notes on your browser",
   "keywords": [
     "d3",
