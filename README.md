@@ -32,21 +32,36 @@ import { Fretboard, Tunings } from "fretboards";
 
 ## Usage examples
 
-Examples using javascript:
+### The javascript API:
 
 ```js
 // Layout a specific scale
-var fb = Fretboard();
-fb.draw("a phrygian");
+var fb = fretboard.Fretboard();
+fb.add("a phrygian").paint();
 
 // Use alternative tunings
-var fbDropD = Fretboard({ tuning: Tunings.Drop_D });
-fbDropD.draw("a phrygian");
+var fbDropD = fretboard.Fretboard({ tuning: fretboard.Tunings.guitar6.Drop_D });
+fbDropD.add("a phrygian").paint();
 
 // Place specific notes on specific strings, e.g. for chord voicings
-var c7add9 = Fretboard({ frets: 5 });
-c7add9.draw("5:c3 4:e3 3:bb3 2:d4 1:g4");
+var c7add9 = fretboard.Fretboard({ frets: 5 });
+c7add9.add("5:c3 4:e3 3:bb3 2:d4 1:g4").paint();
 ```
+
+### Property updates
+
+Once the fretboard is rendered, you can dynamically update configuration
+properties and the fretboard will redraw, keeping the notes. Examples include:
+
+```js
+fb.set("fretWidth", 30);
+fb.set("leftHanded", true);
+fb.set("frets", 12);
+```
+
+Check the full example at `demos/dynamic.html`.
+
+### The 'document' API
 
 You can also use HTML attributes for declaratively including fretboard
 instances in your page, and using `Fretboard.drawAll(selector)` as in the
@@ -61,7 +76,7 @@ example below:
 
 <!-- bootstrapping javascript at the end -->
 <script>
-  Fretboard.drawAll(".fb-container");
+  fretboard.Fretboard.drawAll(".fb-container");
 </script>
 ```
 
@@ -69,7 +84,7 @@ You can pass initialization configuration options to `drawAll`, e.g.:
 
 ```html
 <script>
-  Fretboard.drawAll(".fb-container", {
+  fretboard.Fretboard.drawAll(".fb-container", {
     tuning: Tunings.guitar6.E_4ths,
     leftHanded: true,
   });
@@ -92,6 +107,3 @@ config = {
   showTitle: false, // Set the note name as the title, so it will display on hover
 };
 ```
-
-For a live example of how fretboards look like, check out this
-[bl.ocks.org block](https://bl.ocks.org/txels/9d5bb78c606285cae893ede79542cd9a)

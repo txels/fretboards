@@ -7,11 +7,17 @@ test:
 package:
 	npm run package
 
+bump-micro:
+	npm version micro
+
+bump-minor:
+	npm version minor
+
 publish: package
 	npm publish
 
 publish-demos:
-	scp *.{html,js,css} txels.com:fretboard/
+	scp -r demos dist txels.com:fretboard/
 
 
 .PHONY: setup run test publish

@@ -4,4 +4,5 @@ Makefile
 karma.conf.js
 *.html
 *.md
+*.map
 .python-version

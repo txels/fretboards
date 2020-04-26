@@ -34,7 +34,8 @@
   ],
   "scripts": {
     "test": "jest",
-    "package": "webpack"
+    "package": "webpack",
+    "preversion": "npm run package && npm test"
   },
   "bugs": {
     "url": "https://github.com/txels/fretboards/issues"

@@ -156,6 +156,13 @@ export const Fretboard = function (config) {
     ...config,
   };
 
+  // METHODS for dynamic prop changes ---------------------------
+
+  instance.set = (prop, value) => {
+    instance[prop] = value;
+    instance.repaint();
+  };
+
   // METHODS for managing notes ---------------------------------
 
   instance.addNoteOnString = function (note, string, color) {
@@ -183,7 +190,6 @@ export const Fretboard = function (config) {
   };
 
   instance.scale = function (scaleName) {
-    instance.clear();
     instance.addNotes(asNotes(scaleName));
     return instance;
   };
@@ -380,9 +386,9 @@ export const Fretboard = function (config) {
       .style("fill", "#ddd");
   };
 
-  instance.svgContainer = makeContainer(where);
-
   instance.drawBoard = function () {
+    instance.delete();
+    instance.svgContainer = makeContainer(where);
     drawFrets();
     drawDots();
     drawStrings();
@@ -390,6 +396,9 @@ export const Fretboard = function (config) {
   };
 
   function paintNote(note, string, color) {
+    if (string > instance.strings) {
+      return false;
+    }
     let absPitch = absNote(note);
     let actualColor = color || "black";
     let absString = instance.strings - string;
@@ -420,7 +429,9 @@ export const Fretboard = function (config) {
       if (instance.showTitle) {
         circle.append("title").text(note.toUpperCase());
       }
+      return true;
     }
+    return false;
   }
 
   instance.paint = function () {
@@ -429,15 +440,16 @@ export const Fretboard = function (config) {
     }
   };
 
+  instance.repaint = function () {
+    instance.drawBoard();
+    instance.paint();
+  };
+
   instance.clear = function () {
     instance.clearNotes();
-    d3.select("#" + id)
-      .selectAll(".fretnum,.tuning")
-      .remove();
-    instance.svgContainer.selectAll("line").remove();
-    instance.svgContainer.selectAll("circle").remove();
+    const el = document.getElementById(id);
+    el.parentNode.removeChild(el);
     instance.drawBoard();
-
     return instance;
   };
 
