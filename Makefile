@@ -2,24 +2,24 @@ run:
 	python3 -m http.server 8007
 
 test:
-	npm test
+	yarn test
 
 package:
-	npm run package
+	yarn package
 
 bump-micro:
-	npm version micro
+	yarn version --micro
 
 bump-minor:
-	npm version minor
+	yarn version --minor
 
 publish: package
 	git push --tags
-	npm publish
+	yarn publish
 	make publish-demos
 
 publish-demos:
 	scp -r demos dist txels.com:fretboard/
 
 
-.PHONY: setup run test publish
+.PHONY: run test package bump-micro bump-minor publish publish-demos

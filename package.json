@@ -35,7 +35,7 @@
   "scripts": {
     "test": "jest",
     "package": "webpack",
-    "preversion": "npm run package && npm test"
+    "preversion": "yarn package && yarn test"
   },
   "bugs": {
     "url": "https://github.com/txels/fretboards/issues"
