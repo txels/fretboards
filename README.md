@@ -6,6 +6,8 @@ This is an example of how it looks like:
 
 ![](GMajor.png)
 
+A live demo is available at http://fretboard.txels.com/demos/dynamic.html
+
 ## Installation
 
 As a script tag, from CDN:

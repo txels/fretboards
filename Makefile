@@ -14,7 +14,9 @@ bump-minor:
 	npm version minor
 
 publish: package
+	git push --tags
 	npm publish
+	make publish-demos
 
 publish-demos:
 	scp -r demos dist txels.com:fretboard/
