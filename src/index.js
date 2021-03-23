@@ -268,7 +268,7 @@ export const Fretboard = function (config) {
     if (instance.leftHanded) {
       container = container
         .append("g")
-        .attr("transform", "scale(-1,1) translate(-" + instance.width + ",0)");
+        .attr("transform", "scale(-1,1) translate(-" + (instance.width-XMARGIN()) + ",0)");
     }
 
     return container;
@@ -282,7 +282,7 @@ export const Fretboard = function (config) {
       let x = (i - instance.startFret) * instance.fretWidth + 1 + XMARGIN();
       let fretNumX = x;
       if (instance.leftHanded) {
-        fretNumX = instance.width - x;
+        fretNumX = instance.width - XMARGIN() - x;
       }
       // fret
       instance.svgContainer
@@ -315,14 +315,14 @@ export const Fretboard = function (config) {
         .attr("stroke-width", 1);
     }
     let placeTuning = function (d, i) {
-      return (instance.strings - i) * instance.fretHeight - 5 + "px";
+      return (instance.strings - i) * instance.fretHeight - 4 + "px";
     };
 
     let toBaseFretNote = function (note) {
       return noteName(absNote(note) + instance.startFret);
     };
 
-    let hPosition = instance.leftHanded ? instance.width - 16 + "px" : "4px";
+    let hPosition = instance.leftHanded ? instance.width - XMARGIN() - 16 + "px" : "4px";
 
     d3.select("#" + id)
       .selectAll(".tuning")
