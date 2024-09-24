@@ -1,5 +1,5 @@
 import * as d3 from "d3-selection";
-import "./assets/fretboard.css";
+import "../assets/fretboard.css";
 
 // Music
 const allNotes = [
