@@ -454,16 +454,25 @@ export const Fretboard = function (config) {
         if (instance.showTitle) {
           circle.append("title").text(note.toUpperCase());
         }
+
+        var orientation = 1;
+        var scale = "scale(1,1)"
+        if(instance.leftHanded) {
+          orientation = -1
+          scale = "scale(-1,1)"
+        }
+
         if(instance.showNames)
         {
           instance.svgContainer
           .append("text")
           .text(note.substring(0, note.length - 1))
-          .attr("dx", (absPitch - basePitch + 0.75) * instance.fretWidth)
+          .attr("dx", orientation * (absPitch - basePitch + 0.75) * instance.fretWidth)
           .attr("dy", (string - 1) * instance.fretHeight + 4 + YMARGIN())
           .attr("class", "fretnum")
           .style("text-anchor", "middle")
           .style("fill", actualNameColor)
+          .attr("transform", scale)
         }
       return true;
     }
