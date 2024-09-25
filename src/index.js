@@ -74,6 +74,14 @@ export const Scales = {
   },
 };
 
+let createArray = function(x, l) {
+    x = [].concat(x) // guarantee we are starting with an array
+    while(x.length < l) {
+      x = x.concat(x)
+    }
+    return(x.slice(0, l))
+}
+
 export function whatIs(sequence) {
   let sections = sequence.split(" ");
   if (sections.length === 2 && typeof Scales[sections[1]] === "string") {
@@ -143,6 +151,13 @@ export const Fretboard = function (config) {
 
   let id = "fretboard-" + Math.floor(Math.random() * 1000000);
 
+  let fillColors = config.fillColors || "white"
+  let nameColors = config.nameColors || "gray"
+  let lineColors = config.colors || "gray"
+  fillColors = createArray(fillColors, 7)
+  nameColors = createArray(nameColors, 7)
+  lineColors = createArray(lineColors, 7)
+
   let instance = {
     frets: 12,
     startFret: 0,
@@ -151,10 +166,18 @@ export const Fretboard = function (config) {
     fretWidth: 50,
     fretHeight: 20,
     leftHanded: false,
-    showTitle: false,
     notes: [],
+    radius: 6,
+    dotRadius: 4,
+    showTitle: false,
+    showNames: false,
+    nameColor: "gray",
     ...config,
   };
+
+  instance.fillColors = fillColors;
+  instance.nameColors = nameColors;
+  instance.colors = lineColors;
 
   // METHODS for dynamic prop changes ---------------------------
 
@@ -165,25 +188,27 @@ export const Fretboard = function (config) {
 
   // METHODS for managing notes ---------------------------------
 
-  instance.addNoteOnString = function (note, string, color) {
-    instance.notes.push({ note, string, color });
+  instance.addNoteOnString = function (note, string, color, fill, nameColor) {
+    instance.notes.push({ note, string, color, fill, nameColor });
     return instance;
   };
 
-  instance.addNote = function (note, color) {
+  instance.addNote = function (note, color, fill, nameColor) {
     for (let string = 1; string <= instance.strings; string++) {
-      instance.addNoteOnString(note, string, color);
+      instance.addNoteOnString(note, string, color, fill, nameColor);
     }
     return instance;
   };
 
-  instance.addNotes = function (notes, color) {
+  instance.addNotes = function (notes, color, fill, nameColor) {
     let allNotes = notes.split(" ");
     for (let i = 0; i < allNotes.length; i++) {
       let showColor = color || colors[i];
+      let showFill = fill || instance.fillColors[i];
+      let showNameColor = nameColor || instance.nameColors[i];
       let note = allNotes[i];
       for (let octave = 1; octave < 7; octave++) {
-        instance.addNote(note + octave, showColor);
+        instance.addNote(note + octave, showColor, showFill, showNameColor);
       }
     }
     return instance;
@@ -220,7 +245,7 @@ export const Fretboard = function (config) {
     instance.svgContainer.selectAll(".note").remove();
     return instance;
   };
-
+  
   // METHODS for drawing -------------------------------------------
 
   let fretFitsIn = function (fret) {
@@ -365,7 +390,7 @@ export const Fretboard = function (config) {
       .append("circle")
       .attr("cx", dotX)
       .attr("cy", dotY(2))
-      .attr("r", 4)
+      .attr("r", instance.dotRadius)
       .style("fill", "#ddd");
 
     p = instance.svgContainer.selectAll(".octave").data(fretsWithDoubleDots());
@@ -375,14 +400,14 @@ export const Fretboard = function (config) {
       .attr("class", "octave")
       .attr("cx", dotX)
       .attr("cy", dotY(3))
-      .attr("r", 4)
+      .attr("r", instance.dotRadius)
       .style("fill", "#ddd");
     p.enter()
       .append("circle")
       .attr("class", "octave")
       .attr("cx", dotX)
       .attr("cy", dotY(1))
-      .attr("r", 4)
+      .attr("r", instance.dotRadius)
       .style("fill", "#ddd");
   };
 
@@ -395,12 +420,14 @@ export const Fretboard = function (config) {
     return instance;
   };
 
-  function paintNote(note, string, color) {
+  function paintNote(note, string, color, fill, nameColor) {
     if (string > instance.strings) {
       return false;
     }
     let absPitch = absNote(note);
     let actualColor = color || "black";
+    let actualFill = fill || "white";
+    let actualNameColor = nameColor || "gray";
     let absString = instance.strings - string;
     let basePitch = absNote(instance.tuning[absString]) + instance.startFret;
     if (
@@ -414,29 +441,47 @@ export const Fretboard = function (config) {
         // 0.75 is the offset into the fret (higher is closest to fret)
         .attr("cx", (absPitch - basePitch + 0.75) * instance.fretWidth)
         .attr("cy", (string - 1) * instance.fretHeight + 1 + YMARGIN())
-        .attr("r", 6)
+        .attr("r", instance.radius)
         .style("stroke", actualColor)
-        .style("fill", "white")
+        .style("fill", actualFill)
         .on("click", function () {
-          let fill = this.style.fill;
           this.setAttribute(
             "stroke-width",
             5 - parseInt(this.getAttribute("stroke-width"))
           );
-          this.style.fill = fill === "white" ? "lightgray" : "white";
         });
 
-      if (instance.showTitle) {
-        circle.append("title").text(note.toUpperCase());
-      }
+        if (instance.showTitle) {
+          circle.append("title").text(note.toUpperCase());
+        }
+
+        var orientation = 1;
+        var scale = "scale(1,1)"
+        if(instance.leftHanded) {
+          orientation = -1
+          scale = "scale(-1,1)"
+        }
+
+        if(instance.showNames)
+        {
+          instance.svgContainer
+          .append("text")
+          .text(note.substring(0, note.length - 1))
+          .attr("dx", orientation * (absPitch - basePitch + 0.75) * instance.fretWidth)
+          .attr("dy", (string - 1) * instance.fretHeight + 4 + YMARGIN())
+          .attr("class", "fretnum")
+          .style("text-anchor", "middle")
+          .style("fill", actualNameColor)
+          .attr("transform", scale)
+        }
       return true;
     }
     return false;
   }
 
   instance.paint = function () {
-    for (let { note, string, color } of instance.notes) {
-      paintNote(note, string, color);
+    for (let { note, string, color, fill, nameColor } of instance.notes) {
+      paintNote(note, string, color, fill, nameColor);
     }
   };
 
