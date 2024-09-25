@@ -2,20 +2,20 @@ run:
 	python3 -m http.server 8007
 
 test:
-	yarn test
+	npm run test
 
 package:
-	yarn package
+	npm run package
 
-bump-micro:
-	yarn version --micro
+# bump-micro:
+# 	yarn version --micro
 
-bump-minor:
-	yarn version --minor
+# bump-minor:
+# 	yarn version --minor
 
 publish: package
 	git push --tags
-	yarn publish
+	npm run publish
 	make publish-demos
 
 publish-demos:
