@@ -12,6 +12,7 @@ module.exports = {
     sourceMapFilename: "fretboard.js.map",
     pathinfo: true,
   },
+  mode: "production",
   module: {
     rules: [
       {
