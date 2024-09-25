@@ -7,9 +7,25 @@
 
   <body>            
     <h1> Color Circles With Names </h1>
+    This is the a-minor hexatonic (blues) scale with root notes colored red and the "blues notes" colored blue. 
     <div style="padding-left: 30px;" id="fb-container-1"></div>
     
+    Note that when creating a fretboard diagram, you can turn on note names and specify both the circle 
+    fill colors and circle radius. If you provide less than seven colors for the fill and note names, 
+    your colors will be recycled. Here is an example
+
+    <pre style="background-color: #eee;">
+      var fb = fretboard.Fretboard(
+        {
+            radius: 8,
+            showNames: true,
+            fillColors: ["red", "white", "white", "blue", "white", "white", "white"],
+            nameColors: ["white", "black", "black", "white", "black", "black"],
+        })
+        fb.add("a minor-blues").paint();   
+    </pre>
     <h1> Left Handed </h1>
+    Same as above, left handed view.
     <div style="padding-left: 30px;" id="fb-container-2"></div>      
 
     <script>
