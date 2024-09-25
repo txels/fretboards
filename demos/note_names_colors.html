@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="../dist/fretboard.js"></script>
+  </head>
+
+  <body>            
+    <h1> Color Circles With Names </h1>
+    <div style="padding-left: 30px;" id="fb-container-1"></div>
+    
+    <h1> Left Handed </h1>
+    <div style="padding-left: 30px;" id="fb-container-2"></div>      
+
+    <script>
+        var fb = fretboard.Fretboard(
+        {
+            where: "#fb-container-1",
+            leftHanded: false,
+            radius: 8,
+            showNames: true,
+            fillColors: ["red", "white", "white", "blue", "white", "white", "white"],
+            nameColors: ["white", "black", "black", "white", "black", "black"],
+        })
+        fb.add("a minor-blues").paint();   
+    
+        var fb2 = fretboard.Fretboard(
+        {
+            where: "#fb-container-2",
+            leftHanded: true,
+            radius: 8,
+            showNames: true,
+            fillColors: ["red", "white", "white", "blue", "white", "white", "white"],
+            nameColors: ["white", "black", "black", "white", "black", "black"],
+        })
+        fb2.add("a minor-blues").paint();
+    </script>
+</html>
