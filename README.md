@@ -107,5 +107,22 @@ config = {
   fretHeight: 20, // Display heigh of frets in pixels
   leftHanded: false, // Show mirror image for left handed players
   showTitle: false, // Set the note name as the title, so it will display on hover
+  nameColors: [],
 };
 ```
+
+## Development and Contributing
+
+I use node 18 and `yarn`. Your mileage may vary with other versions and `npm`.
+
+The commands I typically use are in the `Justfile` or directly in `package.json`.
+
+Get started with:
+
+    yarn install
+    yarn build
+    yarn test
+
+If you contribute some new feature, make sure to extend the docs and add some example under `demos` to showcase it.
+
+I welcome test, examples, documentation. We could do with a thorough single-page showcase in demos that we could also use for visual testing.

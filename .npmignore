@@ -1,8 +1,9 @@
-lib/*
-test/*
-Makefile
-karma.conf.js
-*.html
-*.md
-*.map
 .python-version
+*.html
+*.map
+*.md
+Justfile
+karma.conf.js
+lib/*
+Makefile
+test/*
