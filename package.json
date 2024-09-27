@@ -14,7 +14,7 @@
     "url": "git@github.com:txels/fretboards.git"
   },
   "dependencies": {
-    "d3-selection": "^2.0"
+    "d3-selection": "^3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -36,8 +36,8 @@
   ],
   "scripts": {
     "test": "jest",
-    "package": "webpack",
-    "preversion": "yarn package && yarn test"
+    "build": "webpack",
+    "preversion": "yarn build && yarn test"
   },
   "bugs": {
     "url": "https://github.com/txels/fretboards/issues"

@@ -4,8 +4,8 @@ run:
 test:
 	npm run test
 
-package:
-	npm run package
+build:
+	npm run build
 
 # bump-micro:
 # 	yarn version --micro
@@ -13,7 +13,7 @@ package:
 # bump-minor:
 # 	yarn version --minor
 
-publish: package
+publish: build
 	git push --tags
 	npm publish
 	make publish-demos
@@ -22,4 +22,4 @@ publish-demos:
 	scp -r demos dist txels.com:fretboard/
 
 
-.PHONY: run test package bump-micro bump-minor publish publish-demos
+.PHONY: run test build bump-micro bump-minor publish publish-demos

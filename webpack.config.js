@@ -22,6 +22,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: "babel-loader",
+        exclude: /d3-selection/,
       },
     ],
   },

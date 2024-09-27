@@ -16,7 +16,7 @@ const allNotes = [
   "a#",
   "b",
 ];
-const allNotesEnh = [
+const allNotesEnharmonic = [
   "c",
   "db",
   "d",
@@ -74,13 +74,13 @@ export const Scales = {
   },
 };
 
-let createArray = function(x, l) {
-    x = [].concat(x) // guarantee we are starting with an array
-    while(x.length < l) {
-      x = x.concat(x)
-    }
-    return(x.slice(0, l))
-}
+let createArray = function (x, l) {
+  x = [].concat(x); // guarantee we are starting with an array
+  while (x.length < l) {
+    x = x.concat(x);
+  }
+  return x.slice(0, l);
+};
 
 export function whatIs(sequence) {
   let sections = sequence.split(" ");
@@ -98,7 +98,7 @@ export function asOffset(note) {
   note = note.toLowerCase();
   let offset = allNotes.indexOf(note);
   if (offset === -1) {
-    offset = allNotesEnh.indexOf(note);
+    offset = allNotesEnharmonic.indexOf(note);
   }
   return offset;
 }
@@ -151,12 +151,12 @@ export const Fretboard = function (config) {
 
   let id = "fretboard-" + Math.floor(Math.random() * 1000000);
 
-  let fillColors = config.fillColors || "white"
-  let nameColors = config.nameColors || "gray"
-  let lineColors = config.colors || "gray"
-  fillColors = createArray(fillColors, 7)
-  nameColors = createArray(nameColors, 7)
-  lineColors = createArray(lineColors, 7)
+  let fillColors = config.fillColors || "white";
+  let nameColors = config.nameColors || "gray";
+  let lineColors = config.colors || "gray";
+  fillColors = createArray(fillColors, 7);
+  nameColors = createArray(nameColors, 7);
+  lineColors = createArray(lineColors, 7);
 
   let instance = {
     frets: 12,
@@ -245,7 +245,7 @@ export const Fretboard = function (config) {
     instance.svgContainer.selectAll(".note").remove();
     return instance;
   };
-  
+
   // METHODS for drawing -------------------------------------------
 
   let fretFitsIn = function (fret) {
@@ -293,7 +293,10 @@ export const Fretboard = function (config) {
     if (instance.leftHanded) {
       container = container
         .append("g")
-        .attr("transform", "scale(-1,1) translate(-" + (instance.width-XMARGIN()) + ",0)");
+        .attr(
+          "transform",
+          "scale(-1,1) translate(-" + (instance.width - XMARGIN()) + ",0)"
+        );
     }
 
     return container;
@@ -347,7 +350,9 @@ export const Fretboard = function (config) {
       return noteName(absNote(note) + instance.startFret);
     };
 
-    let hPosition = instance.leftHanded ? instance.width - XMARGIN() - 16 + "px" : "4px";
+    let hPosition = instance.leftHanded
+      ? instance.width - XMARGIN() - 16 + "px"
+      : "4px";
 
     d3.select("#" + id)
       .selectAll(".tuning")
@@ -451,29 +456,31 @@ export const Fretboard = function (config) {
           );
         });
 
-        if (instance.showTitle) {
-          circle.append("title").text(note.toUpperCase());
-        }
+      if (instance.showTitle) {
+        circle.append("title").text(note.toUpperCase());
+      }
 
-        var orientation = 1;
-        var scale = "scale(1,1)"
-        if(instance.leftHanded) {
-          orientation = -1
-          scale = "scale(-1,1)"
-        }
+      var orientation = 1;
+      var scale = "scale(1,1)";
+      if (instance.leftHanded) {
+        orientation = -1;
+        scale = "scale(-1,1)";
+      }
 
-        if(instance.showNames)
-        {
-          instance.svgContainer
+      if (instance.showNames) {
+        instance.svgContainer
           .append("text")
           .text(note.substring(0, note.length - 1))
-          .attr("dx", orientation * (absPitch - basePitch + 0.75) * instance.fretWidth)
+          .attr(
+            "dx",
+            orientation * (absPitch - basePitch + 0.75) * instance.fretWidth
+          )
           .attr("dy", (string - 1) * instance.fretHeight + 4 + YMARGIN())
           .attr("class", "fretnum")
           .style("text-anchor", "middle")
           .style("fill", actualNameColor)
-          .attr("transform", scale)
-        }
+          .attr("transform", scale);
+      }
       return true;
     }
     return false;
