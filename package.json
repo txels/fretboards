@@ -21,7 +21,7 @@
     "@babel/preset-env": "^7.9.5",
     "babel-jest": "^25.0",
     "babel-loader": "^8.1.0",
-    "css-loader": "^3.5.2",
+    "css-loader": "^7.1.2",
     "jest": "^25.4.0",
     "jest-transform-stub": "^2.0.0",
     "style-loader": "^1.1.4",
