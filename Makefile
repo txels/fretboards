@@ -15,7 +15,7 @@ package:
 
 publish: package
 	git push --tags
-	npm run publish
+	npm publish
 	make publish-demos
 
 publish-demos:
